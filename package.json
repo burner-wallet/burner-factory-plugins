@@ -1,0 +1,16 @@
+{
+  "name": "burner-factory-plugins",
+  "description": "Burner Wallet plugins used by burnerfactory.com",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "install": "lerna bootstrap"
+  },
+  "workspaces": [
+    "plugins/*"
+  ],
+  "devDependencies": {
+    "lerna": "^3.18.1"
+  }
+}
