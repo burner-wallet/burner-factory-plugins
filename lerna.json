@@ -1,5 +1,6 @@
 {
   "packages": [
+    "test-wallet",
     "plugins/*"
   ],
   "npmClient": "yarn",

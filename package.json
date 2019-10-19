@@ -8,6 +8,7 @@
     "install": "lerna bootstrap"
   },
   "workspaces": [
+    "test-wallet",
     "plugins/*"
   ],
   "devDependencies": {
