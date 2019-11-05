@@ -4,7 +4,9 @@ import { xdai, dai, eth } from '@burner-wallet/assets';
 import BurnerCore from '@burner-wallet/core';
 import { InjectedSigner, LocalSigner } from '@burner-wallet/core/signers';
 import { InfuraGateway, InjectedGateway, XDaiGateway, } from '@burner-wallet/core/gateways';
-import BurnerUI from '@burner-wallet/ui';
+import ModernUI from '@burner-wallet/modern-ui';
+import PushNotificationPlugin from '@burner-factory/push-notification-plugin';
+import CollectablePlugin from '@burner-factory/collectable-plugin';
 
 const core = new BurnerCore({
   signers: [new InjectedSigner(), new LocalSigner()],
@@ -18,8 +20,12 @@ const core = new BurnerCore({
 
 
 const BurnerWallet = () =>
-  <BurnerUI
+  <ModernUI
     core={core}
+    plugins={[
+      new PushNotificationPlugin(),
+      new CollectablePlugin('100', '0xdc6Bc87DD19a4e6877dCEb358d77CBe76e226B8b'),
+    ]}
   />
 
 

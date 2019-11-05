@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "install": "lerna bootstrap"
+    "install": "lerna bootstrap",
+    "start": "lerna run --parallel start-test-wallet"
   },
   "workspaces": [
     "test-wallet",
