@@ -1,7 +1,7 @@
-import { BurnerPluginContext, Plugin } from '@burner-wallet/ui';
+import { BurnerPluginContext, Plugin } from '@burner-wallet/types';
 import registerServiceWorker, { ServiceWorkerNoSupportError } from 'service-worker-loader!./push-worker';
 
-export default class PushNotificationsPlugin {
+export default class PushNotificationsPlugin implements Plugin {
   constructor() {}
 
   initializePlugin(pluginContext: BurnerPluginContext) {

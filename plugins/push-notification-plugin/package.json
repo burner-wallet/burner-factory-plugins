@@ -6,9 +6,11 @@
   "main": "dist/PushNotificationsPlugin.js",
   "types": "dist/PushNotificationsPlugin.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start-test-wallet": "tsc -w"
   },
   "dependencies": {
+    "@burner-wallet/types": "^1.0.0-beta.0",
     "@types/workbox-window": "^4.3.2",
     "service-worker-loader": "^3.3.1"
   }
