@@ -1,0 +1,16 @@
+{
+  "name": "@burner-factory/schedule-plugin",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/SchedulePlugin.js",
+  "types": "dist/SchedulePlugin.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-test-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@burner-wallet/types": "^1.0.0-beta.0",
+    "react-swipeable-routes": "^0.6.0"
+  }
+}

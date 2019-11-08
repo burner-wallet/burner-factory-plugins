@@ -1,0 +1,297 @@
+[
+  {
+    "day":"friday",
+    "events":[
+      {
+        "time":"4:00PM",
+        "title":"Hackathon registration opens",
+        "details":null
+      },
+      {
+        "time":"4:30-6:30PM",
+        "title":"Getting started with Ethereum development: How to use Metamask, Remix and Web3.js [A must attend for beginners!]",
+        "details":"with Josh Crites from Consensys Academy"
+      },
+      {
+        "time":"6:00PM",
+        "title":null,
+        "details":"Dinner"
+      },
+      {
+        "time":"7:00PM - 8:30PM",
+        "title":null,
+        "details":"Opening ceremony"
+      },
+      {
+        "time":"8:30PM",
+        "title":"Hacking begins!!",
+        "details":null
+      },
+      {
+        "time":"8:30 - 8:55PM",
+        "title":"Team formation workshop",
+        "details":""
+      },
+      {
+        "time":"9:00 - 9:25PM",
+        "title":"I-B-C, Easy as N-F-T (Baby, you and me)",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"9:00 - 9:25PM",
+        "title":"Contract-fillable Liquidity Made Simple",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"9:00 - 9:25PM",
+        "title":"Monetize your casual game into a Blockchain eSports Game",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"9:30 - 9:55PM",
+        "title":"Managing secrets in your DApp",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"9:30 - 9:55PM",
+        "title":"Solving usability problems with delegated key management",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"9:30 - 9:55PM",
+        "title":"How to use UMA to build tokens that track the price of anything",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"10:00 - 10:25PM",
+        "title":"The Rise of PoS and why participation matters",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"10:00 - 10:25PM",
+        "title":"Applied ThunderCore 101",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"10:00 - 10:25PM",
+        "title":"From Single-Collateral Dai to Multi-Collatoral Dai",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"10:30 - 10:55PM",
+        "title":"Making dApps feel like apps: Best practices for using elastic sidechains",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"10:30 - 10:55PM",
+        "title":"An Introduction to Privacy on Ethereum",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"10:30 - 10:55PM",
+        "title":"Coda: Decentralized at Scale",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"11:00 - 11:25PM",
+        "title":"Arbitrum SDK: Building trustless, scalable, and private off-chain dApps",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"11:00 - 11:25PM",
+        "title":"Real time chain data for an awesome UX",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"11:00 - 11:25PM",
+        "title":"Getting Started With Layer 2 for Your DApp",
+        "details":"Lazaridis Room"
+      }
+    ]
+  },
+  {
+    "day":"saturday",
+    "events":[
+      {
+        "time":"8:00AM",
+        "title":null,
+        "details":"Breakfast"
+      },
+      {
+        "time":"9:30 - 9:55AM",
+        "title":"Accepting Crypto with Zabo",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"9:30 - 9:55AM",
+        "title":"Coinbase API Prize Workshop",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"9:30 - 9:55AM",
+        "title":"Chainlink Developer Workshop",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"10:00 - 10:25AM",
+        "title":"Indexing the New Economy",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"10:00 - 10:25AM",
+        "title":"Gas Optimization using TrueCurrencies",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"10:00 - 10:25AM",
+        "title":"Secret Contracts: Private Data in dApps",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"10:30 - 10:55AM",
+        "title":"Interoperability with Metaverse & KrawlCat (ERC1973)",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"10:30 - 10:55AM",
+        "title":"Increasing Your DApp Userbase",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"10:30 - 10:55AM",
+        "title":"The AAVE Protocol",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"11:00 - 11:25AM",
+        "title":"Designing Ethereum UX for Humans - Considerations & Tech Stack",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"11:00 - 11:25AM",
+        "title":"Developing data-rich smart-contracts",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"11:00 - 11:25AM",
+        "title":"Your dapp isn't finished without ENS",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"12:00PM",
+        "title":null,
+        "details":"Lunch"
+      },
+      {
+        "time":"1:00 - 1:25PM",
+        "title":"Architecture Session: Using Elastic Blockchain Networks as an execution layer for Ethereum",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"1:00 - 1:25PM",
+        "title":"Brave's Story",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"1:00 - 1:25PM",
+        "title":"Building Walletless Apps",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"1:30 - 1:55PM",
+        "title":"Arbitrum: Off-Chain Contracts with On-Chain Security",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"1:30 - 1:55PM",
+        "title":"Building Clovers Network",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"1:30 - 1:55PM",
+        "title":"What Coinbase thinks you should consider before placing 10M into DeFi",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"2:00 - 2:25PM",
+        "title":"On Oracles",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"2:00 - 2:25PM",
+        "title":"A Financial System By & For the People",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"2:00 - 2:25PM",
+        "title":"The Future of 0x",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"2:30 - 2:55PM",
+        "title":"Why Ethereum matters for developers",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"2:30 - 2:55PM",
+        "title":"The Challenges of Composable Smart Contracts",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"2:30 - 2:55PM",
+        "title":"Designing ethereum user experiences for humans - and the tech stack to enable it",
+        "details":"Lazaridis Room"
+      },
+      {
+        "time":"3:00 - 3:25PM",
+        "title":"UMA’s DVM: Using Economic Guarantees to Build a Provable Honest Oracle",
+        "details":"Napolean Room"
+      },
+      {
+        "time":"3:00 - 3:25PM",
+        "title":"Bring mass adoption and sustainable developer monetization to every blockchain",
+        "details":"Buterin Room"
+      },
+      {
+        "time":"6:00PM",
+        "title":null,
+        "details":"Dinner"
+      }
+    ]
+  },
+  {
+    "day":"sunday",
+    "events":[
+      {
+        "time":"8:00AM",
+        "title":null,
+        "details":"Breakfast"
+      },
+      {
+        "time":"9:30AM",
+        "title":"Project submission deadline!",
+        "details":null
+      },
+      {
+        "time":"10:00AM",
+        "title":null,
+        "details":"Judging begins"
+      },
+      {
+        "time":"12:00PM",
+        "title":null,
+        "details":"Lunch"
+      },
+      {
+        "time":"2:30PM - 3:30PM",
+        "title":null,
+        "details":"Closing ceremony"
+      },
+      {
+        "time":"4:00PM",
+        "title":"After party! 🎉",
+        "details":null
+      }
+    ]
+  }
+]
