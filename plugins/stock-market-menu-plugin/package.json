@@ -1,0 +1,16 @@
+{
+  "name": "@burner-factory/stock-market-menu-plugin",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/StockMarketMenuPlugin.js",
+  "types": "dist/StockMarketMenuPlugin.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-local-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@types/workbox-window": "^4.3.2",
+    "service-worker-loader": "^3.3.1"
+  }
+}

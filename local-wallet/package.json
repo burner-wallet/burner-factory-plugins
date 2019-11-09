@@ -1,17 +1,11 @@
 {
-  "name": "test-wallet",
+  "name": "local-wallet",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "start": "react-scripts start",
-    "start-test-wallet": "react-scripts start",
-    "build": "react-scripts build"
-  },
   "dependencies": {
     "@burner-factory/collectable-plugin": "^1.0.0",
-    "@burner-factory/order-menu-plugin": "^0.1.0",
-    "@burner-factory/push-notification-plugin": "^0.1.0",
     "@burner-factory/schedule-plugin": "^0.1.0",
+    "@burner-factory/stock-market-menu-plugin": "^0.1.0",
     "@burner-wallet/assets": "^0.0.24",
     "@burner-wallet/core": "^0.0.26",
     "@burner-wallet/modern-ui": "^1.0.0-beta.1",
@@ -23,7 +17,17 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "^3.2.0",
-    "typescript": "3.5.1"
+    "typescript": "3.5.1",
+    "web3": "1.0.0-beta.55"
+  },
+  "scripts": {
+    "start": "node ./scripts/run-local.js",
+    "start-local-wallet": "node ./scripts/run-local.js",
+    "start-wallet": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "install-all": "./scripts/install.sh"
   },
   "browserslist": {
     "production": [
@@ -36,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "axios": "^0.19.0"
   }
 }

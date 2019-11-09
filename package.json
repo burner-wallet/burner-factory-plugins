@@ -6,10 +6,12 @@
   "private": true,
   "scripts": {
     "install": "lerna bootstrap",
-    "start": "lerna run --parallel start-test-wallet"
+    "start": "lerna run --parallel start-test-wallet",
+    "start-local": "lerna run --parallel start-local-wallet"
   },
   "workspaces": [
     "test-wallet",
+    "local-wallet",
     "plugins/*"
   ],
   "devDependencies": {
