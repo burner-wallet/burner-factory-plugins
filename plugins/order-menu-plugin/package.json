@@ -1,0 +1,15 @@
+{
+  "name": "@burner-factory/order-menu-plugin",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/OrderMenuPlugin.js",
+  "types": "dist/OrderMenuPlugin.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@types/workbox-window": "^4.3.2",
+    "service-worker-loader": "^3.3.1"
+  }
+}

@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "start-test-wallet": "react-scripts start"
+    "start-test-wallet": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "@burner-factory/collectable-plugin": "^1.0.0",
+    "@burner-factory/order-menu-plugin": "^0.1.0",
     "@burner-factory/push-notification-plugin": "^0.1.0",
     "@burner-factory/schedule-plugin": "^0.1.0",
     "@burner-wallet/assets": "^0.0.24",

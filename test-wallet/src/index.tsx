@@ -7,6 +7,7 @@ import { InfuraGateway, InjectedGateway, XDaiGateway, } from '@burner-wallet/cor
 import ModernUI from '@burner-wallet/modern-ui';
 import PushNotificationPlugin from '@burner-factory/push-notification-plugin';
 import CollectablePlugin from '@burner-factory/collectable-plugin';
+import OrderMenuPlugin from '@burner-factory/order-menu-plugin';
 import SchedulePlugin from '@burner-factory/schedule-plugin';
 
 const core = new BurnerCore({
@@ -24,8 +25,9 @@ const BurnerWallet = () =>
   <ModernUI
     core={core}
     plugins={[
-      new PushNotificationPlugin(),
+      new PushNotificationPlugin(process.env.REACT_APP_VAPID_KEY!, process.env.REACT_APP_WALLET_ID!, 'http://localhost:3000'),
       new CollectablePlugin('100', '0xdc6Bc87DD19a4e6877dCEb358d77CBe76e226B8b'),
+      new OrderMenuPlugin(''),
       new SchedulePlugin(),
     ]}
   />
