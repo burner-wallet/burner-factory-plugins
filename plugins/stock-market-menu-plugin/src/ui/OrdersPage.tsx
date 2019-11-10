@@ -8,8 +8,13 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
   const _plugin = plugin as StockMarketMenuPlugin;
   const [orders, setOrders] = useState<Order[]>([]);
 
+  const refresh = async () => {
+    const orders = await _plugin.getOrders(defaultAccount);
+    setOrders(orders);
+  };
+
   useEffect(() => {
-    _plugin.getOrders(defaultAccount).then((orders: Order[]) => setOrders(orders));
+    refresh();
   }, [defaultAccount]);
 
   const { Page, Button } = burnerComponents;
@@ -22,6 +27,14 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
           <div>{order.name}</div>
           <div>{order.displayPrice}</div>
           <div>From: {order.buyer}</div>
+          {_plugin.adminMode && (
+            <div>
+              <input type="checkbox" checked={order.completed} onChange={e => {
+                _plugin.setCompleted(order.tx, e.target.checked);
+                refresh();
+              }} />
+            </div>
+          )}
         </div>
       ))}
     </Page>

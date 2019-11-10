@@ -24,6 +24,7 @@ export interface Order {
   displayPrice: string;
   buyer: string;
   tx: string;
+  completed: boolean;
 }
 
 export default class StockMarketMenuPlugin implements Plugin {
@@ -31,12 +32,14 @@ export default class StockMarketMenuPlugin implements Plugin {
   public paymentAsset: string;
   // @ts-ignore
   public name: string;
+  public adminMode: boolean;
   private network: string;
   private pluginContext?: BurnerPluginContext;
   private drinks?: Drink[];
   private asset?: Asset;
+  private completed: { [id: string]: boolean };
 
-  constructor(marketAddress: string, paymentAsset: string, network: string = '100') {
+  constructor(marketAddress: string, paymentAsset: string, network: string = '100', adminMode: boolean = false) {
     let name = localStorage.getItem('stock-name');
     if (name) {
       this.name = name;
@@ -44,9 +47,11 @@ export default class StockMarketMenuPlugin implements Plugin {
       this.setName(funnyName());
     }
 
+    this.completed = JSON.parse(localStorage.getItem('completedOrders') || '{}')!;
     this.marketAddress = marketAddress;
     this.paymentAsset = paymentAsset;
     this.network = network;
+    this.adminMode = adminMode;
   }
 
   initializePlugin(pluginContext: BurnerPluginContext) {
@@ -117,10 +122,16 @@ export default class StockMarketMenuPlugin implements Plugin {
     console.log(receipt);
   }
 
+  setCompleted(id: string, completed: boolean) {
+    this.completed[id] = completed;
+    localStorage.setItem('completedOrders', JSON.stringify(this.completed));
+  }
+
   async getOrders(user: string): Promise<Order[]> {
     const events = await this.getMarketContract().getPastEvents('BuyDrink', {
       fromBlock: 0,
       toBlock: 'latest',
+      filter: this.adminMode ? {} : { buyer: user },
     });
     return events.map((event: any) => ({
       price: event.returnValues.price.toString(),
@@ -128,6 +139,7 @@ export default class StockMarketMenuPlugin implements Plugin {
       name: toUtf8(event.returnValues.drinkName),
       buyer: toUtf8(event.returnValues.buyername),
       tx: event.transactionHash,
+      completed: !!this.completed[event.transactionHash],
     }));
   }
 
