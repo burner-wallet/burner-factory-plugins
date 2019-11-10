@@ -17,16 +17,17 @@ interface DrinkItemProps {
   plugin: StockMarketMenuPlugin;
   onClick: () => void;
   selected: boolean;
+  sender: string;
 }
 
 const RISING_TIME = 30 * 1000;
 
-const DrinkItem: React.FC<DrinkItemProps> = ({ drink, onClick, selected, plugin }) => {
+const DrinkItem: React.FC<DrinkItemProps> = ({ drink, onClick, selected, plugin, sender }) => {
   const [metadata, setMetadata] = useState<Metadata | null>(null);
 
   useEffect(() => {
     const interval = window.setInterval(async () => {
-      const metadata = await plugin.getMetadata(drink.id);
+      const metadata = await plugin.getMetadata(drink.id, sender);
       setMetadata(metadata);
     }, 2000);
     return () => window.clearInterval(interval);
