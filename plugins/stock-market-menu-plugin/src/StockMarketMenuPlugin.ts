@@ -4,6 +4,7 @@ import { toUtf8, fromUtf8, fromWei, toBN, padLeft } from 'web3-utils';
 import MenuPage from './ui/MenuPage';
 import OrdersPage from './ui/OrdersPage';
 import marketAbi from './abi/Market.json';
+import funnyName from './name';
 
 export interface Drink {
   id: string;
@@ -28,12 +29,21 @@ export interface Order {
 export default class StockMarketMenuPlugin implements Plugin {
   public marketAddress: string;
   public paymentAsset: string;
+  // @ts-ignore
+  public name: string;
   private network: string;
   private pluginContext?: BurnerPluginContext;
   private drinks?: Drink[];
   private asset?: Asset;
 
   constructor(marketAddress: string, paymentAsset: string, network: string = '100') {
+    let name = localStorage.getItem('stock-name');
+    if (name) {
+      this.name = name;
+    } else {
+      this.setName(funnyName());
+    }
+
     this.marketAddress = marketAddress;
     this.paymentAsset = paymentAsset;
     this.network = network;
@@ -51,6 +61,11 @@ export default class StockMarketMenuPlugin implements Plugin {
     if (!asset) {
       throw new Error(`Unrecognized asset ${this.paymentAsset}`);
     }
+  }
+
+  setName(name: string) {
+    this.name = name;
+    localStorage.setItem('stock-name', name);
   }
 
   getMarketContract() {
@@ -95,7 +110,7 @@ export default class StockMarketMenuPlugin implements Plugin {
     const roundedPrice = toBN(price).mul(toBN('12')).div(toBN('10')).toString();
 
     const web3 = this.pluginContext!.getWeb3(this.network);
-    const data = web3.eth.abi.encodeParameters(['uint256', 'bytes32'], [drinkId, padLeft(fromUtf8('Test stuff'), 64)]);
+    const data = web3.eth.abi.encodeParameters(['uint256', 'bytes32'], [drinkId, padLeft(fromUtf8(this.name), 64)]);
 
     const assetContract = (this.asset as any).getContract();//.getGaslessContract();
     const receipt = await assetContract.methods.send(this.marketAddress, roundedPrice, data).send({ from: fromAccount });

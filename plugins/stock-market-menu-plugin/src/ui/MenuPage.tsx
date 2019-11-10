@@ -10,6 +10,8 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
   const [selected, setSelected] = useState<Drink | null>(null);
   const [selectedMeta, setSelectedMeta] = useState<Metadata | null>(null);
   const [numOrders, setNumOrders] = useState(0);
+  const [editing, setEditing] = useState(false);
+  const [newName, setNewName] = useState(_plugin.name);
 
   const refreshSelectedMeta = async () => {
     if (selected) {
@@ -34,12 +36,25 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
     actions.navigateTo('/stock-market/orders')
   };
 
+  const nameLinkClick = editing ? () => {
+    _plugin.setName(newName);
+    setEditing(false);
+  } : () => setEditing(true);
+
   const { Page, Button, AccountBalance } = burnerComponents;
   return (
     <Page title="Menu">
       {numOrders > 0 && (
         <Button onClick={() => actions.navigateTo('/stock-market/orders')}>My Orders ({numOrders})</Button>
       )}
+
+      <div style={{ margin: '4px'}}>
+        Your Name:
+        {editing ? (
+          <input value={newName} onChange={(e: any) => setNewName(e.target.value)} />
+        ) : _plugin.name}
+        <a href="#" onClick={nameLinkClick}>{editing ? 'Save' : 'Edit'}</a>
+      </div>
 
       {drinks.map((drink: Drink) => (
         <DrinkItem
