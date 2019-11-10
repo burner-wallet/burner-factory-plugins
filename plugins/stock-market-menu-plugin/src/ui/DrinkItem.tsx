@@ -1,5 +1,5 @@
-import React from 'react';
-import StockMarketMenuPlugin, { Drink } from '../StockMarketMenuPlugin';
+import React, { useState, useEffect, Fragment } from 'react';
+import StockMarketMenuPlugin, { Drink, Metadata } from '../StockMarketMenuPlugin';
 import styled from 'styled-components';
 
 const Item = styled.div<{ selected: boolean }>`
@@ -8,6 +8,7 @@ const Item = styled.div<{ selected: boolean }>`
   padding: 8px;
   padding: 14px;
   font-size: 24px;
+  justify-content: space-between;
   ${props => props.selected ? 'border-color: #FF9999' : ''}
 `;
 
@@ -18,10 +19,29 @@ interface DrinkItemProps {
   selected: boolean;
 }
 
-const DrinkItem: React.FC<DrinkItemProps> = ({ drink, onClick, selected }) => {
+const RISING_TIME = 30 * 1000;
+
+const DrinkItem: React.FC<DrinkItemProps> = ({ drink, onClick, selected, plugin }) => {
+  const [metadata, setMetadata] = useState<Metadata | null>(null);
+
+  useEffect(() => {
+    const interval = window.setInterval(async () => {
+      const metadata = await plugin.getMetadata(drink.id);
+      setMetadata(metadata);
+    }, 2000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const goingUp = !!metadata && (Date.now() - metadata.lastPurchase.getTime()) < RISING_TIME;
   return (
     <Item onClick={onClick} selected={selected}>
-      {drink.name}
+      <div>{drink.name}</div>
+      {metadata && (
+        <Fragment>
+          <div>{goingUp ? 'Up' : 'Down'}</div>
+          <div>{metadata.displayPrice}</div>
+        </Fragment>
+      )}
     </Item>
   );
 };

@@ -1,11 +1,17 @@
 import { Plugin, BurnerPluginContext, Account } from '@burner-wallet/types';
-import { toUtf8 } from 'web3-utils';
+import { toUtf8, fromWei } from 'web3-utils';
 import MenuPage from './ui/MenuPage';
 import marketAbi from './abi/Market.json';
 
 export interface Drink {
   id: string;
   name: string;
+}
+
+export interface Metadata {
+  price: string;
+  displayPrice: string;
+  lastPurchase: Date;
 }
 
 export default class StockMarketMenuPlugin implements Plugin {
@@ -43,6 +49,20 @@ export default class StockMarketMenuPlugin implements Plugin {
       }));
     }
     return this.drinks!;
+  }
+
+  async getMetadata(drinkId: string): Promise<Metadata> {
+    const contract = this.getMarketContract();
+    const [price, lastPurchase] = await Promise.all([
+      contract.methods.getPrice(drinkId).call(),
+      contract.methods.getLastPurchase(drinkId).call(),
+    ]);
+
+    return {
+      price: price.toString(),
+      displayPrice: fromWei(price.toString(), 'ether'),
+      lastPurchase: new Date(lastPurchase.toNumber() * 1000),
+    }
   }
 
   async vendorSearch(query: string): Promise<Account[]> {
