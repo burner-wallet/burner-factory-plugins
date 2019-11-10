@@ -2,6 +2,7 @@ import { Plugin, BurnerPluginContext, Account } from '@burner-wallet/types';
 import { Asset } from '@burner-wallet/assets';
 import { toUtf8, fromUtf8, fromWei, toBN, padLeft } from 'web3-utils';
 import MenuPage from './ui/MenuPage';
+import OrdersPage from './ui/OrdersPage';
 import marketAbi from './abi/Market.json';
 
 export interface Drink {
@@ -14,6 +15,14 @@ export interface Metadata {
   displayPrice: string;
   lastPurchase: Date;
   insufficent: boolean;
+}
+
+export interface Order {
+  name: string;
+  price: string;
+  displayPrice: string;
+  buyer: string;
+  tx: string;
 }
 
 export default class StockMarketMenuPlugin implements Plugin {
@@ -32,8 +41,9 @@ export default class StockMarketMenuPlugin implements Plugin {
 
   initializePlugin(pluginContext: BurnerPluginContext) {
     this.pluginContext = pluginContext;
-    pluginContext.addButton('apps', 'Menu', '/menu', { description: 'Buy some beer!' });
-    pluginContext.addPage('/menu/:vendorName?', MenuPage);
+    pluginContext.addButton('apps', 'Menu', '/stock-market', { description: 'Buy some beer!' });
+    pluginContext.addPage('/stock-market/orders', OrdersPage);
+    pluginContext.addPage('/stock-market', MenuPage);
     pluginContext.onAccountSearch(query => this.vendorSearch(query));
 
     const [asset] = pluginContext.getAssets().filter((asset: Asset) => asset.id === this.paymentAsset);
@@ -90,6 +100,20 @@ export default class StockMarketMenuPlugin implements Plugin {
     const assetContract = (this.asset as any).getContract();//.getGaslessContract();
     const receipt = await assetContract.methods.send(this.marketAddress, roundedPrice, data).send({ from: fromAccount });
     console.log(receipt);
+  }
+
+  async getOrders(user: string): Promise<Order[]> {
+    const events = await this.getMarketContract().getPastEvents('BuyDrink', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    });
+    return events.map((event: any) => ({
+      price: event.returnValues.price.toString(),
+      displayPrice: fromWei(event.returnValues.price.toString(), 'ether'),
+      name: toUtf8(event.returnValues.drinkName),
+      buyer: toUtf8(event.returnValues.buyername),
+      tx: event.transactionHash,
+    }));
   }
 
   async vendorSearch(query: string): Promise<Account[]> {

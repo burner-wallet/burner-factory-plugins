@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { PluginPageContext } from '@burner-wallet/types';
 import { toBN } from 'web3-utils';
-import StockMarketMenuPlugin, { Drink, Metadata } from '../StockMarketMenuPlugin';
+import StockMarketMenuPlugin, { Drink, Metadata, Order } from '../StockMarketMenuPlugin';
 import DrinkItem from './DrinkItem';
 
-const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defaultAccount }) => {
+const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defaultAccount, actions }) => {
   const _plugin = plugin as StockMarketMenuPlugin;
   const [drinks, setDrinks] = useState<Drink[]>([]);
   const [selected, setSelected] = useState<Drink | null>(null);
   const [selectedMeta, setSelectedMeta] = useState<Metadata | null>(null);
+  const [numOrders, setNumOrders] = useState(0);
 
   const refreshSelectedMeta = async () => {
     if (selected) {
@@ -19,6 +20,7 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
 
   useEffect(() => {
     _plugin.getDrinks().then((drinks: Drink[]) => setDrinks(drinks));
+    _plugin.getOrders(defaultAccount).then((orders: Order[]) => setNumOrders(orders.length));
   }, []);
 
   useEffect(() => {
@@ -29,13 +31,16 @@ const MenuPage: React.FC<PluginPageContext> = ({ burnerComponents, plugin, defau
 
   const buy = async () => {
     await _plugin.buy(defaultAccount, selected!.id);
-    setSelected(null);
-    setSelectedMeta(null);
+    actions.navigateTo('/stock-market/orders')
   };
 
   const { Page, Button, AccountBalance } = burnerComponents;
   return (
     <Page title="Menu">
+      {numOrders > 0 && (
+        <Button onClick={() => actions.navigateTo('/stock-market/orders')}>My Orders ({numOrders})</Button>
+      )}
+
       {drinks.map((drink: Drink) => (
         <DrinkItem
           drink={drink}
