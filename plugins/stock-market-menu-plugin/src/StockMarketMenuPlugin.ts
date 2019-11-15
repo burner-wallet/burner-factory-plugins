@@ -27,6 +27,8 @@ export interface Order {
   completed: boolean;
 }
 
+const BEER = String.fromCodePoint(0x1F37A);
+
 export default class StockMarketMenuPlugin implements Plugin {
   public marketAddress: string;
   public paymentAsset: string;
@@ -38,6 +40,7 @@ export default class StockMarketMenuPlugin implements Plugin {
   private drinks?: Drink[];
   private asset?: Asset;
   private completed: { [id: string]: boolean };
+  public historicPrices: { [id: string]: number[] };
 
   constructor(marketAddress: string, paymentAsset: string, network: string = '100', adminMode: boolean = false) {
     let name = localStorage.getItem('stock-name');
@@ -52,11 +55,12 @@ export default class StockMarketMenuPlugin implements Plugin {
     this.paymentAsset = paymentAsset;
     this.network = network;
     this.adminMode = adminMode;
+    this.historicPrices = {};
   }
 
   initializePlugin(pluginContext: BurnerPluginContext) {
     this.pluginContext = pluginContext;
-    pluginContext.addButton('apps', 'Menu', '/stock-market', { description: 'Buy some beer!' });
+    pluginContext.addButton('apps', `${BEER} Menu`, '/stock-market', { description: 'Buy some beer!' });
     pluginContext.addPage('/stock-market/orders', OrdersPage);
     pluginContext.addPage('/stock-market', MenuPage);
     pluginContext.onAccountSearch(query => this.vendorSearch(query));
@@ -73,9 +77,9 @@ export default class StockMarketMenuPlugin implements Plugin {
     localStorage.setItem('stock-name', name);
   }
 
-  getMarketContract() {
+  getMarketContract(): any {
     const web3 = this.pluginContext!.getWeb3(this.network);
-    return new web3.eth.Contract(marketAbi, this.marketAddress);
+    return new web3.eth.Contract(marketAbi as any, this.marketAddress);
   }
 
   async getDrinks(): Promise<Drink[]> {
@@ -104,7 +108,7 @@ export default class StockMarketMenuPlugin implements Plugin {
     return {
       price: price.toString(),
       displayPrice: fromWei(price.toString(), 'ether'),
-      lastPurchase: new Date(lastPurchase.toNumber() * 1000),
+      lastPurchase: new Date(parseInt(lastPurchase) * 1000),
       insufficent,
     }
   }
