@@ -6,11 +6,13 @@ import { InjectedSigner, LocalSigner } from '@burner-wallet/core/signers';
 import { HTTPGateway } from '@burner-wallet/core/gateways';
 import ModernUI from '@burner-wallet/modern-ui';
 import CollectablePlugin from '@burner-factory/collectable-plugin';
+import ContractWalletSigner from '@burner-factory/contract-wallet-signer';
 import StockMarketMenuPlugin from '@burner-factory/stock-market-menu-plugin';
 import SchedulePlugin from '@burner-factory/schedule-plugin';
 
 const core = new BurnerCore({
   signers: [
+    new ContractWalletSigner('0x2350aDCee6C162B05580C4fc1603c4d410C960d3'),
     new InjectedSigner(),
     new LocalSigner({ privateKey: process.env.REACT_APP_PK, saveKey: false }),
   ],
@@ -18,12 +20,12 @@ const core = new BurnerCore({
     new HTTPGateway('http://localhost:8545', '5777'),
   ],
   assets: [
-    new ERC777Asset({
-      id: 'localerc777',
-      name: 'Waterloonies',
-      network: '5777',
-      address: '0x8d3afbb824AD2205016bd8c1c8D5a3B3DC38d427',
-    }),
+    // new ERC777Asset({
+    //   id: 'localerc777',
+    //   name: 'Waterloonies',
+    //   network: '5777',
+    //   address: '0x8d3afbb824AD2205016bd8c1c8D5a3B3DC38d427',
+    // }),
     new ERC20Asset({
       id: 'localerc20',
       name: 'Local Token',

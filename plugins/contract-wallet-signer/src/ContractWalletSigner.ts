@@ -1,6 +1,7 @@
 import BurnerCore from '@burner-wallet/core';
 import Signer from '@burner-wallet/core/signers/Signer';
 import { padLeft, soliditySha3 } from 'web3-utils';
+import factoryAbi from './factory-abi.json';
 
 const arrayEquals = (a: string[], b: string[]) => a.length === b.length
   && a.reduce((current: boolean, val: string, i: number) => current && val === b[i], true);
@@ -12,6 +13,7 @@ export default class ContractWalletSigner extends Signer {
   public innerFactoryAddress: string;
   private available: boolean;
   private _updating: boolean;
+  private walletOwner: { [walletAddress: string]: string };
 
   constructor(factoryAddress: string) {
     super();
@@ -19,6 +21,7 @@ export default class ContractWalletSigner extends Signer {
     this.innerFactoryAddress = this.calculateFactoryAddress();
     this.available = false;
     this._updating = false;
+    this.walletOwner = {};
   }
 
   setCore(core: BurnerCore) {
@@ -31,8 +34,32 @@ export default class ContractWalletSigner extends Signer {
     return this.accounts.length > 0;
   }
 
-  signTx(tx: any) {
-    return '';
+  async signTx(tx: any) {
+    const web3 = this.core!.getWeb3(tx.chainId);
+    const factory = new web3.eth.Contract(factoryAbi as any, this.factoryAddress);
+
+    const isDeployed = (await web3.eth.getCode(tx.from)) !== '0x';
+    const params = [tx.to, tx.data || '0x', tx.value || '0x0'];
+    const methodCall = isDeployed
+      ? factory.methods.execute(...params)
+      : factory.methods.createAndExecute(...params);
+
+    const fromAddress = this.walletOwner[tx.from]
+
+    const data = methodCall.encodeABI();
+    const gas = await methodCall.estimateGas({ from: fromAddress });
+
+    const newTx = {
+      data,
+      gas,
+      from: fromAddress,
+      to: this.factoryAddress,
+      nonce: await web3.eth.getTransactionCount(fromAddress),
+      gasPrice: tx.gasPrice,
+      chainId: tx.chainId,
+    };
+    const signed = await this.core!.signTx(newTx);
+    return signed;
   }
 
   updateAccounts(accounts: string[]) {
@@ -44,7 +71,9 @@ export default class ContractWalletSigner extends Signer {
     const newAccounts: string[] = [];
     for (const account of accounts) {
       if (this.accounts.indexOf(account) === -1) {
-        newAccounts.push(this.getWalletAddress(account));
+        const walletAddress = this.getWalletAddress(account);
+        this.walletOwner[walletAddress] = account;
+        newAccounts.push(walletAddress);
       }
     }
 
