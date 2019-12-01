@@ -9,7 +9,7 @@
     "start-test-wallet": "tsc -w"
   },
   "dependencies": {
-    "@burner-wallet/types": "^1.0.0-beta.0",
+    "@burner-wallet/types": "^1.0.0",
     "@types/styled-components": "4.1.8",
     "styled-components": "^4.4.0"
   }
