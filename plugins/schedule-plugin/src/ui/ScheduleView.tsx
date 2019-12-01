@@ -1,13 +1,19 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import SwipeableRoutes from 'react-swipeable-routes';
+import { Day } from '../SchedulePlugin';
 import ScheduleDay from './ScheduleDay';
 
-const ScheduleView: React.FC<{ schedule: any, day?: string }> = ({ schedule, day }) => {
+interface ScheduleViewProps {
+  schedule: Day[],
+  day?: string,
+}
+
+const ScheduleView: React.FC<ScheduleViewProps> = ({ schedule, day }) => {
   return (
     <div>
       <SwipeableRoutes>
-        {schedule.map((day: any, i: number) => (
+        {schedule.map((day: Day, i: number) => (
           <Route path={`/schedule/${day.day}`} key={day.day} render={() => (
             <ScheduleDay
               day={day}

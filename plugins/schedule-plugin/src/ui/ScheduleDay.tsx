@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Day, Event } from '../SchedulePlugin';
 
 const DayTitle = styled.h2`
   margin: 2px 0;
@@ -32,7 +33,7 @@ const EventTitle = styled.h3`
 `;
 
 interface ScheduleDayProps {
-  day: any;
+  day: Day;
   previousDay?: string;
   nextDay?: string;
 }
@@ -46,7 +47,7 @@ const ScheduleDay: React.FC<ScheduleDayProps> = ({ day, previousDay, nextDay }) 
         <InnerTitle>{day.day}</InnerTitle>
         {nextDay && <TitleArrow to={`/schedule/${nextDay}`}>&#9654;</TitleArrow>}
       </DayTitle>
-      {day.events.map((event: any) => (
+      {day.events.map((event: Event) => (
         <Event>
           <Time>{event.time}</Time>
           <EventTitle>{event.title}</EventTitle>
