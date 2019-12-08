@@ -6,10 +6,12 @@
   "main": "dist/OrderMenuPlugin.js",
   "types": "dist/OrderMenuPlugin.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "start-test-wallet": "tsc -w",
+    "start-local-wallet": "tsc -w"
   },
   "dependencies": {
-    "@types/workbox-window": "^4.3.2",
-    "service-worker-loader": "^3.3.1"
+    "@burner-wallet/types": "^1.0.0",
+    "styled-components": "^4.4.1"
   }
 }
