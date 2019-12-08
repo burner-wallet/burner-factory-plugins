@@ -12,7 +12,7 @@ interface MenuPageParams {
   vendorName: string;
 }
 
-const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponents, plugin, assets, match }) => {
+const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponents, plugin, assets, match, actions }) => {
   const _plugin = plugin as OrderMenuPlugin;
   const [menu, setMenu] = useState<Menu | null>(null);
   const [selection, setSelection] = useState<Selection>({});
@@ -39,14 +39,24 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
     ? menu.vendors.filter((_vendor: Vendor) => _vendor.id == match.params.vendorName)
     : [] as Vendor[];
 
+  const send = (total: string, message: string) => actions.send({
+    ether: total,
+    asset: asset.id,
+    message,
+    to: vendor.recipient,
+  });
+
   return (
     <Page title="Menu">
       <AccountBalance
         asset={_plugin.asset}
-        render={(data: AccountBalanceData | null) => (
+        render={(balance: AccountBalanceData | null) => (
           <Fragment>
             {menu.vendors.length > 1 && (
               <Vendors vendors={menu.vendors} />
+            )}
+            {balance && (
+              <div>Available balance: {balance.displayMaximumSendableBalance} {asset.name}</div>
             )}
             {vendor && (
               <OrderForm
@@ -57,7 +67,12 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
               />
             )}
             {Object.values(selection).reduce((a: number, b: number) => a + b, 0) > 0 && (
-              <CheckoutBar selection={selection} />
+              <CheckoutBar
+                selection={selection}
+                items={vendor.items}
+                asset={asset}
+                onSend={send}
+              />
             )}
           </Fragment>
         )}

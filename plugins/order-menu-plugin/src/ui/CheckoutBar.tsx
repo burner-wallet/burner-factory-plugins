@@ -1,6 +1,8 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useRef, Fragment, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { Selection } from '../menuType';
+import { Asset } from '@burner-wallet/types';
+import { Item, Selection } from '../menuType';
+import Stepper from './Stepper';
 
 const Container = styled.div`
   position: fixed;
@@ -10,21 +12,23 @@ const Container = styled.div`
   z-index: 51;
 `;
 
-const PanelContainer = styled.div<{ open: boolean }>`
+const PanelContainer = styled.div`
   position: absolute;
   bottom: 0;
-  max-height: ${props => props.open ? '50%' : '0'};
-  transition: all 1s;
+  height: 0;
+  transition: all 0.5s;
   left: 0;
   right: 0;
 `;
 const Panel = styled.div`
   max-width: 670px;
-  background: gray;
+  background: #e0e0e0;
   margin: 0 auto;
+  padding: 16px;
+  font-size: 18px;
 `;
 
-const CheckoutButton = styled.button`
+const StartCheckoutButton = styled.button`
   width: 100%;
   background: red;
   max-width: 670px;
@@ -33,6 +37,7 @@ const CheckoutButton = styled.button`
   margin: 0 auto;
   outline: none;
   border: 0;
+  font-size: 18px;
 `;
 
 const Background = styled.div`
@@ -44,19 +49,112 @@ const Background = styled.div`
   z-index: 50;
 `;
 
+const LineItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2px 0;
+  padding: 2px 0;
+  border-bottom: solid 1px #aaaaaa;
+`;
+
+const Field = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+`;
+const Label = styled.div`
+  margin-right: 10px;
+`;
+const Notes = styled.textarea`
+  flex: 1;
+  font-size: 18px;
+`;
+
+const CheckoutButton = styled.button`
+  height: 30px;
+  border-radius: 100px;
+  display: block;
+  width: 100%;
+  background: #ededed;
+  font-size: 18px;
+  border: 0;
+`;
+
 interface CheckoutBarProps {
   selection: Selection;
+  items: Item[];
+  asset: Asset;
+  onSend: (total: string, message: string) => void;
 }
 
-const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection }) => {
+interface ItemWithSelection extends Item {
+  quantity: number;
+  cost: number;
+}
+
+const createMessage = (items: ItemWithSelection[], tip: number, note: string) => {
+  let message = items
+    .map((item) => `${item.name}: ${item.quantity}`)
+    .join(', ');
+  if (tip != 0) {
+    message += `, Tip: ${tip}`
+  }
+  if (note.length > 0) {
+    message += `, "${note}"`;
+  }
+
+  return message;
+};
+
+const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSend }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [tip, setTip] = useState(0);
+  const [note, setNote] = useState('');
+  const panel = useRef<HTMLDivElement | null>(null);
+
+  const itemsWithSelection = items.map((item: Item, i: number) => ({
+    ...item,
+    quantity: selection[i],
+    cost: selection[i] * parseFloat(item.price),
+  })).filter((item: ItemWithSelection) => item.quantity > 0);
+
+  const subtotal = itemsWithSelection.reduce((sum: number, item: ItemWithSelection) => sum + item.cost, 0);
+  const total = subtotal + tip;
+
   return (
     <Fragment>
       <Container>
-        <CheckoutButton onClick={() => setIsOpen(!isOpen)}>Checkout</CheckoutButton>
-        <PanelContainer open={isOpen}>
-          <Panel>
-            Test
+        <StartCheckoutButton onClick={() => setIsOpen(!isOpen)}>Checkout</StartCheckoutButton>
+        <PanelContainer
+          style={{ height: isOpen && panel.current ? `${panel.current.clientHeight}px` : undefined }}
+        >
+          <Panel ref={panel}>
+            {itemsWithSelection.map((item: ItemWithSelection) => item.quantity > 0 && (
+              <LineItem>
+                <div key={item.name}>{item.name}{item.quantity > 1 && ` (${item.quantity})`}:</div>
+                <div>{item.cost}</div>
+              </LineItem>
+            ))}
+
+            <div>Subtotal: {subtotal} {asset.name}</div>
+
+            <Field>
+              <Label>Notes:</Label>
+              <Notes onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value)}>{note}</Notes>
+            </Field>
+
+            <Field>
+              <Label>Tip:</Label>
+              <Stepper value={tip} onChange={(newTip: number) => setTip(newTip)} />
+            </Field>
+
+            <div>Total: {total} {asset.name}</div>
+
+            <CheckoutButton onClick={() => onSend(total.toString(), createMessage(itemsWithSelection, tip, note))}>
+              Checkout
+            </CheckoutButton>
           </Panel>
         </PanelContainer>
       </Container>
