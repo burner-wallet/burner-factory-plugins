@@ -132,8 +132,8 @@ const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSe
         >
           <Panel ref={panel}>
             {itemsWithSelection.map((item: ItemWithSelection) => item.quantity > 0 && (
-              <LineItem>
-                <div key={item.name}>{item.name}{item.quantity > 1 && ` (${item.quantity})`}:</div>
+              <LineItem key={item.name}>
+                <div>{item.name}{item.quantity > 1 && ` (${item.quantity})`}:</div>
                 <div>{item.cost}</div>
               </LineItem>
             ))}
@@ -142,7 +142,10 @@ const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSe
 
             <Field>
               <Label>Notes:</Label>
-              <Notes onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value)}>{note}</Notes>
+              <Notes
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setNote(e.target.value)}
+                value={note}
+              />
             </Field>
 
             <Field>

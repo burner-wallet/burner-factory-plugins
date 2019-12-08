@@ -1,12 +1,18 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { PluginPageContext, AccountBalanceData, Asset } from '@burner-wallet/types';
 import { Redirect } from 'react-router-dom';
+import styled from 'styled-components';
 
 import OrderMenuPlugin from '../OrderMenuPlugin';
 import { Menu, Selection, Vendor } from '../menuType';
 import CheckoutBar from './CheckoutBar';
 import OrderForm from './OrderForm';
 import Vendors from './Vendors';
+
+const Balance = styled.div`
+  color: #777777;
+  margin: 8px 0;
+`;
 
 interface MenuPageParams {
   vendorName: string;
@@ -22,6 +28,10 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
     _plugin.getMenu().then((_menu: Menu) => setMenu(_menu));
   }, []);
 
+  useEffect(() => {
+    setSelection({});
+  }, [match.params]);
+
   const { Page, AccountBalance } = BurnerComponents;
   if (!menu) {
     return (
@@ -31,7 +41,7 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
     );
   }
 
-  if (menu.vendors.length === 1 && !match.params.vendorName) {
+  if (!match.params.vendorName) {
     return <Redirect to={`/menu/${menu.vendors[0].id}`} />
   }
 
@@ -56,7 +66,7 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
               <Vendors vendors={menu.vendors} />
             )}
             {balance && (
-              <div>Available balance: {balance.displayMaximumSendableBalance} {asset.name}</div>
+              <Balance>Available balance: {balance.displayMaximumSendableBalance} {asset.name}</Balance>
             )}
             {vendor && (
               <OrderForm
