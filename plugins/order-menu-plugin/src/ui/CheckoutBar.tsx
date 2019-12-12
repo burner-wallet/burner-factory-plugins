@@ -123,10 +123,14 @@ const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSe
   const subtotal = itemsWithSelection.reduce((sum: number, item: ItemWithSelection) => sum + item.cost, 0);
   const total = subtotal + tip;
 
+  const insufficent = parseFloat(balance) < total;
+
   return (
     <Fragment>
       <Container>
-        <StartCheckoutButton onClick={() => setIsOpen(!isOpen)}>Checkout</StartCheckoutButton>
+        <StartCheckoutButton onClick={() => setIsOpen(!isOpen)}>
+          {insufficent ? 'Insufficent funds' : 'Checkout' }
+        </StartCheckoutButton>
         <PanelContainer
           style={{ height: isOpen && panel.current ? `${panel.current.clientHeight}px` : undefined }}
         >
@@ -155,8 +159,11 @@ const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSe
 
             <div>Total: {total} {asset.name}</div>
 
-            <CheckoutButton onClick={() => onSend(total.toString(), createMessage(itemsWithSelection, tip, note))}>
-              Checkout
+            <CheckoutButton
+              onClick={() => onSend(total.toString(), createMessage(itemsWithSelection, tip, note))}
+              disabled={insufficent}
+            >
+              {insufficent ? 'Insufficent funds' : 'Checkout' }
             </CheckoutButton>
           </Panel>
         </PanelContainer>
