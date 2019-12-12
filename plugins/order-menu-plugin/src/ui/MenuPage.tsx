@@ -95,7 +95,7 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
                 items={vendor.items}
                 asset={asset}
                 onSend={send}
-                balance={balance.displayMaximumSendableBalance}
+                balance={balance && balance.displayMaximumSendableBalance}
               />
             )}
           </Fragment>

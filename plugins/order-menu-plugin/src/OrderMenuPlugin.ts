@@ -77,7 +77,7 @@ export default class OrderMenuPlugin implements Plugin {
     return null;
   }
 
-  setName(newName) {
+  setName(newName: string) {
     this.name = newName;
     window.localStorage.setItem(NAME_KEY, newName);
   }

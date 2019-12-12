@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PluginPageContext } from '@burner-wallet/types';
 import styled from 'styled-components';
+import OrderMenuPlugin from '../OrderMenuPlugin';
 
 const NameInput = styled.input`
   width: 100%;
@@ -16,7 +17,7 @@ const SetNamePage: React.FC<PluginPageContext> = ({ BurnerComponents, plugin, ac
     <BurnerComponents.Page title="Set your name">
       <p>Set your name so we know which order is yours!</p>
 
-      <NameInput value={name} onChange={(e: React.ChangeEvent) => setName(e.target.value)} />
+      <NameInput value={name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)} />
 
       <BurnerComponents.Button onClick={() => {
         _plugin.setName(name);

@@ -5,7 +5,7 @@
   "dependencies": {
     "@burner-factory/collectable-plugin": "^1.0.0",
     "@burner-factory/contract-wallet-signer": "^0.1.0",
-    "@burner-factory/schedule-plugin": "^0.1.0",
+    "@burner-factory/schedule-plugin": "^1.0.0",
     "@burner-factory/stock-market-menu-plugin": "^0.1.0",
     "@burner-wallet/assets": "^1.0.0",
     "@burner-wallet/core": "^1.0.0",

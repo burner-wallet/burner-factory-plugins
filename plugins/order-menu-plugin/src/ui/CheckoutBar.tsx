@@ -87,6 +87,7 @@ interface CheckoutBarProps {
   items: Item[];
   asset: Asset;
   onSend: (total: string, message: string) => void;
+  balance: string | null;
 }
 
 interface ItemWithSelection extends Item {
@@ -123,7 +124,7 @@ const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSe
   const subtotal = itemsWithSelection.reduce((sum: number, item: ItemWithSelection) => sum + item.cost, 0);
   const total = subtotal + tip;
 
-  const insufficent = parseFloat(balance) < total;
+  const insufficent = !!balance && parseFloat(balance) < total;
 
   return (
     <Fragment>
