@@ -22,7 +22,6 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
   const _plugin = plugin as OrderMenuPlugin;
   const [menu, setMenu] = useState<Menu | null>(null);
   const [selection, setSelection] = useState<Selection>({});
-  const [asset] = assets.filter((_asset: Asset) => _asset.id === _plugin.asset);
 
   useEffect(() => {
     _plugin.getMenu().then((_menu: Menu) => setMenu(_menu));
@@ -38,6 +37,13 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
       <Page title="Menu">
         Loading...
       </Page>
+    );
+  }
+
+  const [asset] = assets.filter((_asset: Asset) => _asset.id === menu.asset);
+  if (!asset) {
+    return (
+      <div>Error: asset {menu.asset} not found</div>
     );
   }
 
@@ -59,7 +65,7 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
   return (
     <Page title="Menu">
       <AccountBalance
-        asset={_plugin.asset}
+        asset={menu.asset}
         render={(balance: AccountBalanceData | null) => (
           <Fragment>
             {menu.vendors.length > 1 && (

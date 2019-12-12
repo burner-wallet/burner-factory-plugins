@@ -11,21 +11,19 @@ interface OrderMenuPluginOptions {
 
 export default class OrderMenuPlugin implements Plugin {
   private menuId: string;
-  public asset: string;
   private factory: string;
   private title: string;
   private description: string;
   private icon: string | null;
   private _menu: Promise<Menu> | null;
 
-  constructor(menuId: string, asset: string, {
+  constructor(menuId: string, {
     factory = 'https://burnerfactory.com',
     title = 'Order Food & Drinks',
     description = 'Purchase food & drinks with your tokens',
     icon = null,
   }: OrderMenuPluginOptions = {}) {
     this.menuId = menuId;
-    this.asset = asset;
     this.factory = factory;
     this.title = title;
     this.description = description;

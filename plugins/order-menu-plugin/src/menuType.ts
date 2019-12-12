@@ -14,6 +14,7 @@ export interface Vendor {
 
 export interface Menu {
   vendors: Vendor[];
+  asset: string;
 }
 
 export interface Selection {

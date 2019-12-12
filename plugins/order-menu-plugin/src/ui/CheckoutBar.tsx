@@ -108,7 +108,7 @@ const createMessage = (items: ItemWithSelection[], tip: number, note: string) =>
   return message;
 };
 
-const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSend }) => {
+const CheckoutBar: React.FC<CheckoutBarProps> = ({ selection, items, asset, onSend, balance }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [tip, setTip] = useState(0);
   const [note, setNote] = useState('');
