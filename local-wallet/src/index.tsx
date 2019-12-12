@@ -10,6 +10,7 @@ import ContractWalletSigner from '@burner-factory/contract-wallet-signer';
 import StockMarketMenuPlugin from '@burner-factory/stock-market-menu-plugin';
 import SchedulePlugin from '@burner-factory/schedule-plugin';
 import OrderMenuPlugin from '@burner-factory/order-menu-plugin';
+import VendorPlugin from '@burner-factory/vendor-plugin';
 
 const core = new BurnerCore({
   signers: [
@@ -41,7 +42,8 @@ const BurnerWallet = () =>
     core={core}
     plugins={[
       new CollectablePlugin('100', '0xdc6Bc87DD19a4e6877dCEb358d77CBe76e226B8b'),
-      new OrderMenuPlugin('aaaaaaaaaaaaaaaaa', 'localerc20', { factory: 'http://localhost:3000' }),
+      new OrderMenuPlugin('mDd2AzJ2LNY7YCxA9', { factory: 'http://localhost:3000' }),
+      new VendorPlugin('mDd2AzJ2LNY7YCxA9', { factory: 'http://localhost:3000' }),
       // new StockMarketMenuPlugin('0x13adFb029888cf676351C5b878F9B7B87891298A', 'localerc777', '5777', true),
       // new SchedulePlugin(),
     ]}

@@ -1,0 +1,17 @@
+{
+  "name": "@burner-factory/vendor-plugin",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/VendorPlugin.js",
+  "types": "dist/VendorPlugin.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-test-wallet": "tsc -w",
+    "start-local-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@burner-wallet/types": "^1.0.0",
+    "styled-components": "^4.4.1"
+  }
+}
