@@ -62,7 +62,7 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
   const send = (total: string, message: string) => actions.send({
     ether: total,
     asset: asset.id,
-    message,
+    message: `[${_plugin.name}]: ${message}`,
     to: vendor.recipient,
   });
 
