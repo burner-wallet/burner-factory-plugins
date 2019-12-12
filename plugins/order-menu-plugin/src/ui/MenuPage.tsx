@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { PluginPageContext, AccountBalanceData, Asset } from '@burner-wallet/types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import OrderMenuPlugin from '../OrderMenuPlugin';
@@ -47,6 +47,10 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
     );
   }
 
+  if (!_plugin.name) {
+    return <Redirect to="/menu/set-name" />
+  }
+
   if (!match.params.vendorName) {
     return <Redirect to={`/menu/${menu.vendors[0].id}`} />
   }
@@ -71,6 +75,9 @@ const MenuPage: React.FC<PluginPageContext<MenuPageParams>> = ({ BurnerComponent
             {menu.vendors.length > 1 && (
               <Vendors vendors={menu.vendors} />
             )}
+            <Balance>
+              Name: {_plugin.name} <Link to="/menu/set-name">Edit</Link>
+            </Balance>
             {balance && (
               <Balance>Available balance: {balance.displayMaximumSendableBalance} {asset.name}</Balance>
             )}

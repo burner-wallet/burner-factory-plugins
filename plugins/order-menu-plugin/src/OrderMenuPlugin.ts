@@ -1,5 +1,6 @@
 import { Plugin, BurnerPluginContext, Account } from '@burner-wallet/types';
 import MenuPage from './ui/MenuPage';
+import SetNamePage from './ui/SetNamePage';
 import { Menu, Vendor } from './menuType';
 
 interface OrderMenuPluginOptions {
@@ -8,6 +9,7 @@ interface OrderMenuPluginOptions {
   description?: string;
   icon?: string | null;
 }
+const NAME_KEY = 'burner-vendor-name';
 
 export default class OrderMenuPlugin implements Plugin {
   private menuId: string;
@@ -16,6 +18,7 @@ export default class OrderMenuPlugin implements Plugin {
   private description: string;
   private icon: string | null;
   private _menu: Promise<Menu> | null;
+  public name: string | null;
 
   constructor(menuId: string, {
     factory = 'https://burnerfactory.com',
@@ -28,6 +31,7 @@ export default class OrderMenuPlugin implements Plugin {
     this.title = title;
     this.description = description;
     this.icon = icon;
+    this.name = window.localStorage.getItem(NAME_KEY) || null;
 
     this._menu = null;
   }
@@ -37,6 +41,7 @@ export default class OrderMenuPlugin implements Plugin {
       description: this.description,
       icon: this.icon,
     });
+    pluginContext.addPage('/menu/set-name', SetNamePage);
     pluginContext.addPage('/menu/:vendorName?', MenuPage);
     pluginContext.onAccountSearch(query => this.vendorSearch(query));
     pluginContext.addAddressToNameResolver((address: string) => this.lookupName(address));
@@ -70,5 +75,10 @@ export default class OrderMenuPlugin implements Plugin {
       }
     }
     return null;
+  }
+
+  setName(newName) {
+    this.name = newName;
+    window.localStorage.setItem(NAME_KEY, newName);
   }
 }
