@@ -43,7 +43,7 @@ export default class CollectablePlugin implements Plugin {
   async getNFTs(address: string) {
     const contract = this.getContract();
     const numNFTs = await contract.methods.balanceOf(address).call();
-    const nfts = await Promise.all(range(numNFTs.toNumber()).map(async index => {
+    const nfts = await Promise.all(range(parseInt(numNFTs)).map(async index => {
       const nftId = await contract.methods.tokenOfOwnerByIndex(address, index).call();
       return await this.getNFT(nftId);
     }));
@@ -71,20 +71,21 @@ export default class CollectablePlugin implements Plugin {
   }
 
   async canClone(id: string) {
+    const web3 = this.pluginContext!.getWeb3(this.network);
     const contract = this.getContract();
     const { numClonesAllowed, numClonesInWild } = await contract.methods.getCollectablesById(id).call();
-    return numClonesInWild.lt(numClonesAllowed);
+    return web3.utils.toBN(numClonesInWild).lt(web3.utils.toBN(numClonesAllowed));
   }
 
   async cloneNFT(id: string, account: string) {
     const contract = this.getContract();
 
     const previouslyClonedId = await contract.methods.getClonedTokenByAddress(account, id).call();
-    if (previouslyClonedId.toNumber() !== 0) {
+    if (previouslyClonedId !== '0') {
       return previouslyClonedId;
     }
 
     const receipt = await contract.methods.clone(account, id).send({ from: account });
-    return receipt.events.Transfer.returnValues.tokenId.toNumber();
+    return receipt.events.Transfer.returnValues.tokenId;
   }
 }

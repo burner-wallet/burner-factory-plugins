@@ -3,6 +3,16 @@ import { PluginPageContext } from '@burner-wallet/types';
 import styled from 'styled-components';
 import CollectablePlugin, { NFT } from '../CollectablePlugin';
 
+const Image = styled.img`
+  margin: 8px auto;
+  display: block;
+  max-width: 100%;
+`;
+
+const Name = styled.h3`
+  margin: 16px;
+`;
+
 interface ClonePageParams {
   id: string;
 }
@@ -20,8 +30,8 @@ const NFTDetailPage: React.FC<PluginPageContext<ClonePageParams>> = ({ burnerCom
     <Page title={nft ? nft.name : 'Loading...'}>
       {nft ? (
         <Fragment>
-          <img src={nft!.image} style={{ margin: '8px auto', display: 'block' }} />
-          <div style={{ margin: '16px' }}>{nft!.name}</div>
+          <Image src={nft!.image} />
+          <Name>{nft!.name}</Name>
           <div style={{ margin: '16px' }}>{nft!.description}</div>
           <div style={{ margin: '16px' }}>1 of {nft!.attributes.supplyCap} copies</div>
         </Fragment>

@@ -26,27 +26,25 @@ const NFTList = styled.ul`
 
 const Item = styled.li`list-style: none;`;
 
-const NFTDrawer: React.FC<PluginElementContext> = ({ accounts, actions, plugin }) => {
+const NFTDrawer: React.FC<PluginElementContext> = ({ defaultAccount, actions, plugin }) => {
   const _plugin = plugin as CollectablePlugin;
   const [nfts, setNfts] = useState<NFT[]>([]);
 
   useEffect(() => {
-    if (accounts.length > 0) {
-      let timer: number;
-      const queryNfts = async () => {
-        const _nfts = await _plugin.getNFTs(accounts[0]);
-        setNfts(_nfts);
-        timer = window.setTimeout(queryNfts, 1000);
-      }
-      queryNfts();
-
-      return () => {
-        if (timer) {
-          window.clearInterval(timer);
-        }
-      };
+    let timer: number;
+    const queryNfts = async () => {
+      const _nfts = await _plugin.getNFTs(defaultAccount);
+      setNfts(_nfts);
+      timer = window.setTimeout(queryNfts, 2000);
     }
-  }, [accounts]);
+    queryNfts();
+
+    return () => {
+      if (timer) {
+        window.clearInterval(timer);
+      }
+    };
+  }, []);
 
   return (
     <Container>
