@@ -14,6 +14,15 @@
     "type": "function"
   },
   {
+    "constant": false,
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "constant": true,
     "inputs": [],
     "name": "getHubAddr",
@@ -25,6 +34,20 @@
     ],
     "payable": false,
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "setDefaultImplementation",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -49,11 +72,81 @@
   {
     "constant": true,
     "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "isOwner",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "ERC1271_RETURN_VALID_SIGNATURE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getImplementation",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
     "name": "relayHubVersion",
     "outputs": [
       {
         "name": "",
         "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "defaultImplementation",
+    "outputs": [
+      {
+        "name": "",
+        "type": "address"
       }
     ],
     "payable": false,
@@ -87,10 +180,58 @@
     "type": "function"
   },
   {
-    "inputs": [],
+    "constant": false,
+    "inputs": [
+      {
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "walletImplementation",
+        "type": "address"
+      }
+    ],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "name": "implementation",
+        "type": "address"
+      }
+    ],
+    "name": "DefaultImplementationChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -191,6 +332,41 @@
       }
     ],
     "name": "execute",
+    "outputs": [
+      {
+        "name": "response",
+        "type": "bytes"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "wallet",
+        "type": "address"
+      },
+      {
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "name": "data",
+        "type": "bytes"
+      },
+      {
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "name": "signature",
+        "type": "bytes"
+      }
+    ],
+    "name": "executeWithSignature",
     "outputs": [
       {
         "name": "response",

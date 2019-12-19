@@ -6,22 +6,34 @@ import factoryAbi from './factory-abi.json';
 const arrayEquals = (a: string[], b: string[]) => a.length === b.length
   && a.reduce((current: boolean, val: string, i: number) => current && val === b[i], true);
 
-const CREATION_CODE = '0x608060405234801561001057600080fd5b506040516105103803806105108339818101604052604081101561003357600080fd5b81019080805190602001909291908051906020019092919050505081600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550806000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff1602179055505050610430806100e06000396000f3fe6080604052600436106100345760003560e01c806302d05d3f14610039578063a04a090814610090578063c45a0155146101ac575b600080fd5b34801561004557600080fd5b5061004e610203565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b610131600480360360608110156100a657600080fd5b81019080803573ffffffffffffffffffffffffffffffffffffffff169060200190929190803590602001906401000000008111156100e357600080fd5b8201836020820111156100f557600080fd5b8035906020019184600183028401116401000000008311171561011757600080fd5b909192939192939080359060200190929190505050610228565b6040518080602001828103825283818151815260200191508051906020019080838360005b83811015610171578082015181840152602081019050610156565b50505050905090810190601f16801561019e5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b3480156101b857600080fd5b506101c16103d5565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b6000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1681565b60606000809054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614806102d25750600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff16145b610344576040517f08c379a000000000000000000000000000000000000000000000000000000000815260040180806020018281038252601d8152602001807f4d7573742062652063616c6c6564206279207468652063726561746f7200000081525060200191505060405180910390fd5b600060608673ffffffffffffffffffffffffffffffffffffffff1684878760405180838380828437808301925050509250505060006040518083038185875af1925050503d80600081146103b4576040519150601f19603f3d011682016040523d82523d6000602084013e6103b9565b606091505b5091509150816103c857600080fd5b8092505050949350505050565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff168156fea265627a7a7230582042fc19937468d00dc6998acb6dc465ec8a33f9e59f98625d3566f85fd581a52864736f6c634300050a0032';
+const CREATION_CODE = '0x608060405234801561001057600080fd5b506040516104bb3803806104bb8339818101604052604081101561003357600080fd5b81019080805190602001909291908051906020019092919050505060405180807f6275726e65722d77616c6c65742d666163746f72790000000000000000000000815250601501905060405180910390207f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b146100af57fe5b6100be8261028860201b60201c565b6060600073ffffffffffffffffffffffffffffffffffffffff1663485cc955905060e01b8383604051602401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200192505050604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060006101c26102b760201b60201c565b73ffffffffffffffffffffffffffffffffffffffff16826040518082805190602001908083835b6020831061020c57805182526020820191506020810190506020830392506101e9565b6001836020036101000a038019825116818451168082178552505050505050905001915050600060405180830381855af49150503d806000811461026c576040519150601f19603f3d011682016040523d82523d6000602084013e610271565b606091505b505090508061027f57600080fd5b5050505061037d565b60007f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b90508181555050565b60006102c761034c60201b60201c565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b15801561030c57600080fd5b505afa158015610320573d6000803e3d6000fd5b505050506040513d602081101561033657600080fd5b8101908080519060200190929190505050905090565b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b9050805491505090565b61012f8061038c6000396000f3fe6080604052600a600c565b005b60186014601a565b60a4565b565b6000602260c9565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b158015606657600080fd5b505afa1580156079573d6000803e3d6000fd5b505050506040513d6020811015608e57600080fd5b8101908080519060200190929190505050905090565b3660008037600080366000845af43d6000803e806000811460c4573d6000f35b3d6000fd5b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b905080549150509056fea265627a7a723058208c08abafbddfffc81aac97ef5489e7b423dda0b243b2bdec730e3517087afd4064736f6c634300050a0032';
+
+interface ContractWalletSignerOptions {
+  useLocalStorage?: boolean;
+  creationCode?: string;
+}
 
 export default class ContractWalletSigner extends Signer {
   public factoryAddress: string;
   public innerFactoryAddress: string;
+  private creationCode: string;
   private available: boolean;
   private _updating: boolean;
   private walletOwner: { [walletAddress: string]: string };
 
-  constructor(factoryAddress: string) {
+  constructor(factoryAddress: string, {
+    useLocalStorage = true,
+    creationCode = CREATION_CODE,
+  }: ContractWalletSignerOptions = {}) {
     super();
     this.factoryAddress = factoryAddress;
     this.innerFactoryAddress = this.calculateFactoryAddress();
     this.available = false;
     this._updating = false;
     this.walletOwner = {};
+    this.creationCode = creationCode;
+    this.walletSignerOverride = JSON.parse(
+      (useLocalStorage && localStorage.getItem('contractWalletSignerOverride')) || '{}');
   }
 
   setCore(core: BurnerCore) {
@@ -34,18 +46,34 @@ export default class ContractWalletSigner extends Signer {
     return this.accounts.length > 0;
   }
 
+  permissions() {
+    return ['getOwner'];
+  }
+
+  invoke(action: string, address: string) {
+    switch (action) {
+      case 'getOwner':
+        return this.walletOwner[address];
+      default:
+        throw new Error(`Unknown action ${action}`);
+    }
+  }
+
+  getFactory(chainId: string) {
+    const web3 = this.core!.getWeb3(chainId);
+    const factory = new web3.eth.Contract(factoryAbi as any, this.factoryAddress);
+    return factory;
+  }
+
   async signTx(tx: any) {
     const web3 = this.core!.getWeb3(tx.chainId);
-    const factory = new web3.eth.Contract(factoryAbi as any, this.factoryAddress);
+    const factory = this.getFactory(tx.chainId);
 
-    const isDeployed = (await web3.eth.getCode(tx.from)) !== '0x';
-    const params = [tx.to, tx.data || '0x', tx.value || '0x0'];
-    const methodCall = isDeployed
-      ? factory.methods.execute(...params)
-      : factory.methods.createAndExecute(...params);
+    const txData = tx.data || '0x';
+    const value = tx.value || '0x0';
+    const methodCall = factory.methods.createAndExecute(tx.to, txData, value);
 
-    const fromAddress = this.walletOwner[tx.from]
-
+    const fromAddress = this.walletOwner[tx.from];
     const data = methodCall.encodeABI();
     const gas = await methodCall.estimateGas({ from: fromAddress });
 
