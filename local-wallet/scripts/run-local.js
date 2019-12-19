@@ -27,9 +27,7 @@ const getAccount = async web3 => {
     throw new Error('Ganache not found on port 8545');
   }
 
-  const web3 = new Web3(new Web3.providers.HttpProvider(RPC), null, {
-    transactionConfirmationBlocks: 1,
-  });
+  const web3 = new Web3(new Web3.providers.HttpProvider(RPC));
 
   const user = web3.eth.accounts.privateKeyToAccount(PK_USER);
   const deployer = web3.eth.accounts.privateKeyToAccount(DEPLOYER_PK);
