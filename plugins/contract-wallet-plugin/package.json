@@ -1,0 +1,15 @@
+{
+  "name": "@burner-factory/contract-wallet-plugin",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/ContractWalletPlugin.js",
+  "types": "dist/ContractWalletPlugin.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-local-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@burner-wallet/types": "^1.0.0"
+  }
+}
