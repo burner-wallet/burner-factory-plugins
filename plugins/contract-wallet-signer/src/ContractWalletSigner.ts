@@ -20,18 +20,20 @@ export default class ContractWalletSigner extends Signer {
   private available: boolean;
   private _updating: boolean;
   private walletOwner: { [walletAddress: string]: string };
+  public isEnabled: boolean;
 
   constructor(factoryAddress: string, {
     useLocalStorage = true,
     creationCode = CREATION_CODE,
   }: ContractWalletSignerOptions = {}) {
-    super();
+    super({ id: 'contract' });
     this.factoryAddress = factoryAddress;
     this.innerFactoryAddress = this.calculateFactoryAddress();
     this.available = false;
     this._updating = false;
     this.walletOwner = {};
     this.creationCode = creationCode;
+    this.isEnabled = true;
     this.walletSignerOverride = JSON.parse(
       (useLocalStorage && localStorage.getItem('contractWalletSignerOverride')) || '{}');
   }
@@ -47,13 +49,25 @@ export default class ContractWalletSigner extends Signer {
   }
 
   permissions() {
-    return ['getOwner'];
+    return ['getOwner', 'isEnabled', 'enable', 'disable', 'isContractWallet'];
   }
 
   invoke(action: string, address: string) {
     switch (action) {
       case 'getOwner':
         return this.walletOwner[address];
+      case 'isEnabled':
+        return this.isEnabled;
+      case 'enable':
+        this.isEnabled = true;
+        this.updateAccounts(this.core!.getAccounts());
+        return;
+      case 'disable':
+        this.isEnabled = false;
+        this.updateAccounts([]);
+        return;
+      case 'isContractWallet':
+        return true;
       default:
         throw new Error(`Unknown action ${action}`);
     }
@@ -97,11 +111,14 @@ export default class ContractWalletSigner extends Signer {
 
     this._updating = true;
     const newAccounts: string[] = [];
-    for (const account of accounts) {
-      if (this.accounts.indexOf(account) === -1) {
-        const walletAddress = this.getWalletAddress(account);
-        this.walletOwner[walletAddress] = account;
-        newAccounts.push(walletAddress);
+
+    if (this.isEnabled) {
+      for (const account of accounts) {
+        if (this.accounts.indexOf(account) === -1) {
+          const walletAddress = this.getWalletAddress(account);
+          this.walletOwner[walletAddress] = account;
+          newAccounts.push(walletAddress);
+        }
       }
     }
 
