@@ -2,6 +2,8 @@ import BurnerCore from '@burner-wallet/core';
 import Signer from '@burner-wallet/core/signers/Signer';
 import { padLeft, soliditySha3 } from 'web3-utils';
 import factoryAbi from './factory-abi.json';
+import walletAbi from './wallet-abi.json';
+import Web3 from 'web3';
 
 const arrayEquals = (a: string[], b: string[]) => a.length === b.length
   && a.reduce((current: boolean, val: string, i: number) => current && val === b[i], true);
@@ -13,13 +15,18 @@ interface ContractWalletSignerOptions {
   creationCode?: string;
 }
 
+interface Override {
+  address: string;
+  signature: string;
+}
+
 export default class ContractWalletSigner extends Signer {
   public factoryAddress: string;
   public innerFactoryAddress: string;
   private creationCode: string;
-  private available: boolean;
   private _updating: boolean;
   private walletOwner: { [walletAddress: string]: string };
+  private walletSignerOverride: { [walletAddress: string]: Override };
   public isEnabled: boolean;
 
   constructor(factoryAddress: string, {
@@ -29,7 +36,6 @@ export default class ContractWalletSigner extends Signer {
     super({ id: 'contract' });
     this.factoryAddress = factoryAddress;
     this.innerFactoryAddress = this.calculateFactoryAddress();
-    this.available = false;
     this._updating = false;
     this.walletOwner = {};
     this.creationCode = creationCode;
@@ -56,6 +62,9 @@ export default class ContractWalletSigner extends Signer {
     switch (action) {
       case 'getOwner':
         return this.walletOwner[address];
+      case 'setSignerOverride':
+        // TODO: update once burner-core defs are updated
+        return this.setSignerOverride(address, arguments[2] as string);
       case 'isEnabled':
         return this.isEnabled;
       case 'enable':
@@ -73,35 +82,115 @@ export default class ContractWalletSigner extends Signer {
     }
   }
 
-  getFactory(chainId: string) {
-    const web3 = this.core!.getWeb3(chainId);
+  getFactory(chainId?: string) {
+    const web3 = chainId ? this.core!.getWeb3(chainId) : new Web3();
     const factory = new web3.eth.Contract(factoryAbi as any, this.factoryAddress);
     return factory;
   }
 
+  getWallet(chainId?: string, address?: string) {
+    const web3 = chainId ? this.core!.getWeb3(chainId) : new Web3();
+    const wallet = new web3.eth.Contract(walletAbi as any, address);
+    return wallet;
+  }
+
   async signTx(tx: any) {
+    const walletAddress = tx.from;
     const web3 = this.core!.getWeb3(tx.chainId);
     const factory = this.getFactory(tx.chainId);
+    const wallet = this.getWallet(tx.chainId, walletAddress);
 
     const txData = tx.data || '0x';
     const value = tx.value || '0x0';
-    const methodCall = factory.methods.createAndExecute(tx.to, txData, value);
 
-    const fromAddress = this.walletOwner[tx.from];
-    const data = methodCall.encodeABI();
-    const gas = await methodCall.estimateGas({ from: fromAddress });
+    const owner = this.walletOwner[walletAddress];
+    let data, fromAddress;
+    let to = this.factoryAddress;
 
-    const newTx = {
+    const override = this.walletSignerOverride[walletAddress];
+    if (override) {
+      fromAddress = override.address;
+      const targetContractCode = await web3.eth.getCode(walletAddress);
+      const isContractDeployed = targetContractCode !== '0x';
+
+      const isOwner = isContractDeployed && await wallet.methods.isOwner(override.address).call();
+      if (isOwner) {
+        to = walletAddress;
+        data = wallet.methods.execute(tx.to, txData, value).encodeABI();
+      } else {
+        const ownerContract = this.getWalletAddress(override.address);
+
+        const addOwnerData = factory.methods.executeWithSignature(
+          walletAddress,
+          walletAddress,
+          wallet.methods.addOwner(override.address).encodeABI(),
+          '0',
+          override.signature,
+        ).encodeABI();
+
+        const { data: executeWithOverrideSignatureData } = await this.getExecuteWithSignatureValues(
+          walletAddress, tx.to, txData, value, override.address);
+
+        const batchAddresses = [this.factoryAddress, this.factoryAddress];
+        const batchData = [
+          addOwnerData,
+          executeWithOverrideSignatureData,
+        ];
+        const batchValues = ['0', '0'];
+
+        if (!isContractDeployed) {
+          batchAddresses.unshift(this.factoryAddress);
+          batchData.unshift(factory.methods.createWallet(owner).encodeABI());
+          batchValues.unshift('0');
+        }
+
+        const multiTxCall = wallet.methods.executeBatch(
+          batchAddresses,
+          '0x' + batchData.map((str: string) => str.substr(2)).join(''),
+          batchData.map((str: string) => (str.length - 2) / 2),
+          batchValues,
+        ).encodeABI();
+        data = factory.methods.createAndExecute(ownerContract, multiTxCall, '0').encodeABI();
+      }
+    } else {
+      fromAddress = owner;
+      data = factory.methods.createAndExecute(tx.to, txData, value).encodeABI()
+    }
+
+    const newTx: any = {
       data,
-      gas,
       from: fromAddress,
-      to: this.factoryAddress,
+      to,
       nonce: await web3.eth.getTransactionCount(fromAddress),
       gasPrice: tx.gasPrice,
       chainId: tx.chainId,
     };
+    newTx.gas = await web3.eth.estimateGas(newTx);
     const signed = await this.core!.signTx(newTx);
     return signed;
+  }
+
+  async setSignerOverride(walletAddress: string, newSigner: string) {
+    const primarySigner = this.walletOwner[walletAddress];
+    const wallet = this.getWallet();
+    const data = wallet.methods.addOwner(newSigner).encodeABI();
+    const { signature } = await this.getExecuteWithSignatureValues(
+      walletAddress, walletAddress, data, '0', primarySigner);
+
+    this.walletSignerOverride[walletAddress] = { signature, address: newSigner };
+  }
+
+  async getExecuteWithSignatureValues(
+    walletAddress: string, target: string, data: string, value: string, signer: string
+  ) {
+    const factory = this.getFactory();
+    const hash = soliditySha3(walletAddress, target, data, '0');
+    const signature = await this.core!.signMsg(hash, signer);
+
+    const executeData = factory.methods.executeWithSignature(
+      walletAddress, target, data, value, signature).encodeABI();
+
+    return { signature, data: executeData }
   }
 
   updateAccounts(accounts: string[]) {
