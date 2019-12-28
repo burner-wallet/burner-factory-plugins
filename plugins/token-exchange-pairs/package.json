@@ -1,0 +1,14 @@
+{
+  "name": "@burner-factory/token-exchange-pairs",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@burner-wallet/exchange": "^1.0.0"
+  }
+}

@@ -1097,15 +1097,23 @@
     isomorphic-fetch "^2.2.1"
     web3-utils "^1.2.2"
 
-"@burner-wallet/core@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@burner-wallet/core/-/core-1.0.0.tgz#caa15c34e9560e270ed5cffebd8c377789245e32"
-  integrity sha512-fQWQPbBrkhdtbCT3eEMrCVW5X31RTLt4JEUdLDgqJwYuAUDW8fQiqVNzU6e3o8jvDXTXRGlqucEjyGQ8+T1hZQ==
+"@burner-wallet/core@^1.0.0", "@burner-wallet/core@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/core/-/core-1.0.2.tgz#173be119b91d42a6d5d55a2c16bfcdeabe4f3872"
+  integrity sha512-ZZH8rCAkRDJsvMlfQ7R2jkJN2TCG3aozIpoLnGYWY2rml+cLKjmWTCk5Y/I6/nHDWxAA67Ol6rdEDMs4wfDopA==
   dependencies:
     "@burner-wallet/assets" "^1.0.0"
     "@dmihal/tabookey-gasless" "^0.4.1"
     web3 "^1.2.2"
     web3-provider-engine "15.0.3"
+
+"@burner-wallet/exchange@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/exchange/-/exchange-1.0.0.tgz#a5a1ac11ff95d07965868095fa1a8dbe70200635"
+  integrity sha512-E3e3sxALyKXRhRUXQ4NuA9AM0oxJl/VijrkxzBA8gki2EC7620T0IuL4tveh4M+s6oSpL6ytQPgX+mZKErHE5g==
+  dependencies:
+    "@burner-wallet/types" "^1.0.0"
+    "@types/react" "*"
 
 "@burner-wallet/modern-ui@^1.0.0":
   version "1.0.0"
