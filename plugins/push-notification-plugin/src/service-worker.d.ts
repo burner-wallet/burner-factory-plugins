@@ -229,7 +229,7 @@ interface Headers {
 //   requestPermission(): Promise<string>;
 // }
 
-interface NotificationEvent {
+interface NotificationEvent extends ExtendableEvent {
   action: string;
   notification: Notification;
 }

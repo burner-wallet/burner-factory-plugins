@@ -76,6 +76,7 @@ export default class PushNotificationsPlugin implements Plugin {
           subscription: subscriptionString,
         }),
       });
+      this.setRegistered(true);
     } catch (e) {
       if (Notification.permission === 'denied') {
         console.warn('Permission for notifications was denied');
