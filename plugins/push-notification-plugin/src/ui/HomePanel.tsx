@@ -13,22 +13,10 @@ const HomePanel: React.FC<PluginElementContext> = ({ plugin, burnerComponents })
     return () => _plugin.removeRegistrationListener(listener);
   }, []);
 
-  const toggle = () => {
-    if (subscribed) {
-      _plugin.unsubscribe();
-    } else {
-      _plugin.subscribe();
-    }
-  }
-
   const { Button } = burnerComponents;
 
-  if (!('Notification' in window)) {
-    return (
-      <div>
-        <div>Push notifications are not supported on your device</div>
-      </div>
-    );
+  if (subscribed || !('Notification' in window)) {
+    return null;
   }
 
   return (
@@ -37,7 +25,7 @@ const HomePanel: React.FC<PluginElementContext> = ({ plugin, burnerComponents })
         <div style={{ fontWeight: 'bold' }}>Push notifications</div>
         <div>Receive push notifications for incoming transactions and event alerts</div>
       </div>
-      <Button onClick={toggle}>{subscribed ? 'Disable' : 'Enable'}</Button>
+      <Button onClick={() => _plugin.subscribe()}>Enable</Button>
     </div>
   );
 }

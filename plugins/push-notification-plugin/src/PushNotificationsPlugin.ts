@@ -1,5 +1,6 @@
 import { BurnerPluginContext, Plugin } from '@burner-wallet/types';
 import registerServiceWorker, { ServiceWorkerNoSupportError } from 'service-worker-loader!./push-worker';
+import AdvancedPanel from './ui/AdvancedPanel';
 import HomePanel from './ui/HomePanel';
 import { urlB64ToUint8Array } from './lib';
 
@@ -32,6 +33,7 @@ export default class PushNotificationsPlugin implements Plugin {
   }
 
   initializePlugin(pluginContext: BurnerPluginContext) {
+    pluginContext.addElement('advanced', AdvancedPanel);
     pluginContext.addElement('home-middle', HomePanel);
 
     this.registrationPromise = registerServiceWorker({ scope: '/' });
