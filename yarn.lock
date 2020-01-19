@@ -1090,22 +1090,30 @@
     to-fast-properties "^2.0.0"
 
 "@burner-wallet/assets@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@burner-wallet/assets/-/assets-1.0.0.tgz#fddd9ad7b4f3411c2a72bc838648b029f5aa7db2"
-  integrity sha512-kPmn7ORc12vMf0zenb17Omk/X+LDt1vOMt0csFc5BDbnYmVK4zBgCzOvmijHMtLPkPAKWaLyKmcJBzGRaSU2Hw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/assets/-/assets-1.0.3.tgz#314cad8f24fbe6a40b917dc9f0dc3aa5a3c65670"
+  integrity sha512-gSOVtNGDeZk0GtB3Bk1suGSq1pthLndXMcTMev7UXAmIQSQ8i3xfdLD/nWoDOdppbyUsdvrVQXVNWpXvQ+W0zg==
   dependencies:
     isomorphic-fetch "^2.2.1"
     web3-utils "^1.2.2"
 
 "@burner-wallet/core@^1.0.0", "@burner-wallet/core@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@burner-wallet/core/-/core-1.0.2.tgz#173be119b91d42a6d5d55a2c16bfcdeabe4f3872"
-  integrity sha512-ZZH8rCAkRDJsvMlfQ7R2jkJN2TCG3aozIpoLnGYWY2rml+cLKjmWTCk5Y/I6/nHDWxAA67Ol6rdEDMs4wfDopA==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/core/-/core-1.0.3.tgz#276012ac81b4b483e46ebd9c140095584f439b1b"
+  integrity sha512-kEikQyMzH0T17UacDEPukO210FjiaeECpd36SZxEE7mu6xruOM7F7eNZwO4FGDfzGfew1I2rorCQPesimn9paw==
   dependencies:
     "@burner-wallet/assets" "^1.0.0"
     "@dmihal/tabookey-gasless" "^0.4.1"
     web3 "^1.2.2"
     web3-provider-engine "15.0.3"
+
+"@burner-wallet/ens-plugin@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/ens-plugin/-/ens-plugin-1.0.1.tgz#5ced0627facfe4e7208dfdb6443561d3bb75b3ab"
+  integrity sha512-6zVE5AuxzrtVtGd4E4gTukdO6At8tY+L2Vf/UbKBjXyNjisIRY7g2znz0kC7Nlf9JJj1ULb1eBtBWC/fpE07iQ==
+  dependencies:
+    "@burner-wallet/types" "^1.0.0"
+    eth-ens-namehash "^2.0.8"
 
 "@burner-wallet/exchange@^1.0.0":
   version "1.0.0"
@@ -1136,10 +1144,10 @@
     react-qr-reader "^2.2.1"
     styled-components "^4.4.0"
 
-"@burner-wallet/types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@burner-wallet/types/-/types-1.0.0.tgz#f7a0d66ed5ed6796ba05fd49406f46763036d417"
-  integrity sha512-cgbsFXryN/5SyyBMFZ3qui/zNqloifnfTg/BMpYFA/vcWNtVZrIJ6V+Rg5iA6Q0Aef/X/QuEAdkfUEKIiqm+OA==
+"@burner-wallet/types@^1.0.0", "@burner-wallet/types@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/types/-/types-1.0.1.tgz#9edcb30425c71a9b0815322860a3b41211ada813"
+  integrity sha512-mxSktRWYuTQFlrYBxuExJPMPSBqOHllOAEMaZyxMqj7ryBTmZndCdwoz0n8mMCO6B91dC3Ze2k+urhsuSjYBmA==
   dependencies:
     "@burner-wallet/assets" "^1.0.0"
     "@burner-wallet/core" "^1.0.0"
@@ -1148,12 +1156,12 @@
     web3 "^1.2.2"
 
 "@burner-wallet/ui-core@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@burner-wallet/ui-core/-/ui-core-1.0.0.tgz#9f95f3396e4bb02016a26c862c05279c9a665cec"
-  integrity sha512-LmiESDGAPsQ+NZlDqNR4ogGwKfc4dadO88ZLz+bNfmgeZrG3yRKYjLFMI8gJNTFxzc9nrac/iEXnKPFE3GNNIQ==
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@burner-wallet/ui-core/-/ui-core-1.0.1.tgz#a1ea18b720adbf974f147bd18381e01550fc414e"
+  integrity sha512-vCi6vH2SZ6EC7pzIJqkZq2Iqxiy9p3QiodIEzQJwdcoedi/pJuN2EfEl6LnylfJydfvoYBH0x9hxcuvJzMyLSg==
   dependencies:
     "@burner-wallet/core" "^1.0.0"
-    "@burner-wallet/types" "^1.0.0"
+    "@burner-wallet/types" "^1.0.1"
     "@types/react" "*"
     "@types/react-router-dom" "^4.3.4"
     react-router-dom "^5.0.1"
@@ -6018,7 +6026,7 @@ eth-crypto@^1.2.7:
     ethers "4.0.37"
     secp256k1 "3.7.1"
 
-eth-ens-namehash@2.0.8:
+eth-ens-namehash@2.0.8, eth-ens-namehash@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/eth-ens-namehash/-/eth-ens-namehash-2.0.8.tgz#229ac46eca86d52e0c991e7cb2aef83ff0f68bcf"
   integrity sha1-IprEbsqG1S4MmR58sq74P/D2i88=

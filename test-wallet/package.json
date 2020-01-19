@@ -8,12 +8,14 @@
     "build": "react-scripts build"
   },
   "dependencies": {
+    "@burner-factory/burnable-ens-plugin": "^0.1.0",
     "@burner-factory/collectable-plugin": "^1.0.0",
     "@burner-factory/order-menu-plugin": "^0.1.0",
     "@burner-factory/push-notification-plugin": "^0.1.0",
     "@burner-factory/schedule-plugin": "^1.0.0",
     "@burner-wallet/assets": "^1.0.0",
     "@burner-wallet/core": "^1.0.0",
+    "@burner-wallet/ens-plugin": "^1.0.1",
     "@burner-wallet/modern-ui": "^1.0.0",
     "@types/node": "12.0.4",
     "@types/react": "*",

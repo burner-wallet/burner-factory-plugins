@@ -1,0 +1,17 @@
+{
+  "name": "@burner-factory/burnable-ens-plugin",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/BurnableENSPlugin.js",
+  "types": "dist/BurnableENSPlugin.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-test-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@burner-wallet/types": "^1.0.0",
+    "@types/styled-components": "4.1.8",
+    "eth-ens-namehash": "^2.0.8",
+    "styled-components": "^4.4.0"
+  }
+}
