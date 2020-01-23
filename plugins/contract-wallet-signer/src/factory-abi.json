@@ -1,257 +1,6 @@
 [
   {
     "constant": true,
-    "inputs": [],
-    "name": "innerFactory",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getHubAddr",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "implementation",
-        "type": "address"
-      }
-    ],
-    "name": "setDefaultImplementation",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "context",
-        "type": "bytes"
-      }
-    ],
-    "name": "preRelayedCall",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "isOwner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "ERC1271_RETURN_VALID_SIGNATURE",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getImplementation",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "relayHubVersion",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "defaultImplementation",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "context",
-        "type": "bytes"
-      },
-      {
-        "name": "success",
-        "type": "bool"
-      },
-      {
-        "name": "actualCharge",
-        "type": "uint256"
-      },
-      {
-        "name": "preRetVal",
-        "type": "bytes32"
-      }
-    ],
-    "name": "postRelayedCall",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "name": "walletImplementation",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "implementation",
-        "type": "address"
-      }
-    ],
-    "name": "DefaultImplementationChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "oldRelayHub",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "newRelayHub",
-        "type": "address"
-      }
-    ],
-    "name": "RelayHubChanged",
-    "type": "event"
-  },
-  {
-    "constant": true,
     "inputs": [
       {
         "name": "creator",
@@ -413,58 +162,38 @@
     "type": "function"
   },
   {
-    "constant": true,
+    "constant": false,
     "inputs": [
       {
-        "name": "",
+        "name": "owner",
         "type": "address"
       },
       {
-        "name": "from",
+        "name": "target",
         "type": "address"
       },
       {
-        "name": "",
+        "name": "data",
         "type": "bytes"
       },
       {
-        "name": "transactionFee",
+        "name": "value",
         "type": "uint256"
       },
       {
-        "name": "gasPrice",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
+        "name": "signature",
         "type": "bytes"
-      },
-      {
-        "name": "maxPossibleCharge",
-        "type": "uint256"
       }
     ],
-    "name": "acceptRelayedCall",
+    "name": "createAddOwnerAndExecute",
     "outputs": [
       {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
+        "name": "response",
         "type": "bytes"
       }
     ],
     "payable": false,
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]

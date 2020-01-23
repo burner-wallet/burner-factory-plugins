@@ -8,13 +8,14 @@ import Web3 from 'web3';
 const arrayEquals = (a: string[], b: string[]) => a.length === b.length
   && a.reduce((current: boolean, val: string, i: number) => current && val === b[i], true);
 
-const CREATION_CODE = '0x608060405234801561001057600080fd5b506040516104bb3803806104bb8339818101604052604081101561003357600080fd5b81019080805190602001909291908051906020019092919050505060405180807f6275726e65722d77616c6c65742d666163746f72790000000000000000000000815250601501905060405180910390207f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b146100af57fe5b6100be8261028860201b60201c565b6060600073ffffffffffffffffffffffffffffffffffffffff1663485cc955905060e01b8383604051602401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200192505050604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060006101c26102b760201b60201c565b73ffffffffffffffffffffffffffffffffffffffff16826040518082805190602001908083835b6020831061020c57805182526020820191506020810190506020830392506101e9565b6001836020036101000a038019825116818451168082178552505050505050905001915050600060405180830381855af49150503d806000811461026c576040519150601f19603f3d011682016040523d82523d6000602084013e610271565b606091505b505090508061027f57600080fd5b5050505061037d565b60007f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b90508181555050565b60006102c761034c60201b60201c565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b15801561030c57600080fd5b505afa158015610320573d6000803e3d6000fd5b505050506040513d602081101561033657600080fd5b8101908080519060200190929190505050905090565b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b9050805491505090565b61012f8061038c6000396000f3fe6080604052600a600c565b005b60186014601a565b60a4565b565b6000602260c9565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b158015606657600080fd5b505afa1580156079573d6000803e3d6000fd5b505050506040513d6020811015608e57600080fd5b8101908080519060200190929190505050905090565b3660008037600080366000845af43d6000803e806000811460c4573d6000f35b3d6000fd5b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b905080549150509056fea265627a7a723058208c08abafbddfffc81aac97ef5489e7b423dda0b243b2bdec730e3517087afd4064736f6c634300050a0032';
+const CREATION_CODE = '0x608060405234801561001057600080fd5b506040516104bb3803806104bb8339818101604052604081101561003357600080fd5b81019080805190602001909291908051906020019092919050505060405180807f6275726e65722d77616c6c65742d666163746f72790000000000000000000000815250601501905060405180910390207f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b146100af57fe5b6100be8261028860201b60201c565b6060600073ffffffffffffffffffffffffffffffffffffffff1663485cc955905060e01b8383604051602401808373ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1681526020018273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200192505050604051602081830303815290604052907bffffffffffffffffffffffffffffffffffffffffffffffffffffffff19166020820180517bffffffffffffffffffffffffffffffffffffffffffffffffffffffff8381831617835250505050905060006101c26102b760201b60201c565b73ffffffffffffffffffffffffffffffffffffffff16826040518082805190602001908083835b6020831061020c57805182526020820191506020810190506020830392506101e9565b6001836020036101000a038019825116818451168082178552505050505050905001915050600060405180830381855af49150503d806000811461026c576040519150601f19603f3d011682016040523d82523d6000602084013e610271565b606091505b505090508061027f57600080fd5b5050505061037d565b60007f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b90508181555050565b60006102c761034c60201b60201c565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b15801561030c57600080fd5b505afa158015610320573d6000803e3d6000fd5b505050506040513d602081101561033657600080fd5b8101908080519060200190929190505050905090565b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b9050805491505090565b61012f8061038c6000396000f3fe6080604052600a600c565b005b60186014601a565b60a4565b565b6000602260c9565b73ffffffffffffffffffffffffffffffffffffffff1663aaf10f426040518163ffffffff1660e01b815260040160206040518083038186803b158015606657600080fd5b505afa1580156079573d6000803e3d6000fd5b505050506040513d6020811015608e57600080fd5b8101908080519060200190929190505050905090565b3660008037600080366000845af43d6000803e806000811460c4573d6000f35b3d6000fd5b6000807f36ea5a899f007351627d257f82d4383e5e83a8533e5a1c1d27d29a16d656070d60001b905080549150509056fea265627a7a72305820755adf024dc0651882fcb04c8ddcf7af2d943a933e5658cff4cf3367867d977c64736f6c634300050a0032';
 
 const OVERRIDE_STORAGE_KEY = 'contractWalletSignerOverride';
 
 interface ContractWalletSignerOptions {
   useLocalStorage?: boolean;
   creationCode?: string;
+  gasMultiplier?: number;
 }
 
 interface Override {
@@ -31,12 +32,18 @@ export default class ContractWalletSigner extends Signer {
   private walletSignerOverride: { [walletAddress: string]: Override };
   public isEnabled: boolean;
   private useLocalStorage: boolean;
+  private gasMultiplier: number;
 
   constructor(factoryAddress: string, {
     useLocalStorage = true,
     creationCode = CREATION_CODE,
+    gasMultiplier = 1.1,
   }: ContractWalletSignerOptions = {}) {
     super({ id: 'contract' });
+    if (!factoryAddress || factoryAddress.length !== 42) {
+      throw new Error('No contract wallet factory address provided');
+    }
+
     this.factoryAddress = factoryAddress;
     this.innerFactoryAddress = this.calculateFactoryAddress();
     this._updating = false;
@@ -44,6 +51,7 @@ export default class ContractWalletSigner extends Signer {
     this.creationCode = creationCode;
     this.isEnabled = true;
     this.useLocalStorage = useLocalStorage;
+    this.gasMultiplier = gasMultiplier;
 
     this.walletSignerOverride = JSON.parse(
       (useLocalStorage && localStorage.getItem(OVERRIDE_STORAGE_KEY)) || '{}');
@@ -125,43 +133,11 @@ export default class ContractWalletSigner extends Signer {
         to = walletAddress;
         data = wallet.methods.execute(tx.to, txData, value).encodeABI();
       } else {
-        const ownerContract = this.getWalletAddress(override.address);
-
-        const addOwnerData = factory.methods.executeWithSignature(
-          walletAddress,
-          walletAddress,
-          wallet.methods.addOwner(override.address).encodeABI(),
-          '0',
-          override.signature,
-        ).encodeABI();
-
-        const { data: executeWithOverrideSignatureData } = await this.getExecuteWithSignatureValues(
-          walletAddress, tx.to, txData, value, override.address);
-
-        const batchAddresses = [this.factoryAddress, this.factoryAddress];
-        const batchData = [
-          addOwnerData,
-          executeWithOverrideSignatureData,
-        ];
-        const batchValues = ['0', '0'];
-
-        if (!isContractDeployed) {
-          batchAddresses.unshift(this.factoryAddress);
-          batchData.unshift(factory.methods.createWallet(owner).encodeABI());
-          batchValues.unshift('0');
-        }
-
-        const multiTxCall = wallet.methods.executeBatch(
-          batchAddresses,
-          '0x' + batchData.map((str: string) => str.substr(2)).join(''),
-          batchData.map((str: string) => (str.length - 2) / 2),
-          batchValues,
-        ).encodeABI();
-        data = factory.methods.createAndExecute(ownerContract, multiTxCall, '0').encodeABI();
+        data = factory.methods.createAddOwnerAndExecute(owner, tx.to, txData, value, override.signature).encodeABI();
       }
     } else {
       fromAddress = owner;
-      data = factory.methods.createAndExecute(tx.to, txData, value).encodeABI()
+      data = factory.methods.createAndExecute(tx.to, txData, value).encodeABI();
     }
 
     const newTx: any = {
@@ -171,7 +147,8 @@ export default class ContractWalletSigner extends Signer {
       nonce: await web3.eth.getTransactionCount(fromAddress),
       gasPrice: tx.gasPrice,
     };
-    newTx.gas = await web3.eth.estimateGas(newTx);
+    const gasEstimate = await web3.eth.estimateGas(newTx);
+    newTx.gas = Math.floor(gasEstimate * this.gasMultiplier).toString();
     newTx.chainId = tx.chainId;
     const signed = await this.core!.signTx(newTx);
     return signed;
@@ -179,10 +156,8 @@ export default class ContractWalletSigner extends Signer {
 
   async setSignerOverride(walletAddress: string, newSigner: string) {
     const primarySigner = this.walletOwner[walletAddress];
-    const wallet = this.getWallet();
-    const data = wallet.methods.addOwner(newSigner).encodeABI();
-    const { signature } = await this.getExecuteWithSignatureValues(
-      walletAddress, walletAddress, data, '0', primarySigner);
+    const hash = soliditySha3('burn:', walletAddress, newSigner);
+    const signature = await this.core!.signMsg(hash, primarySigner);
 
     this.setOverride(walletAddress, signature, newSigner);
   }
