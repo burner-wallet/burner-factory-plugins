@@ -1,6 +1,6 @@
 {
   "name": "@burner-factory/contract-wallet-signer",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "author": "David Mihal <david@dmihal.com>",
   "license": "MIT",
   "main": "dist/ContractWalletSigner.js",
@@ -11,7 +11,7 @@
     "test": "TS_NODE_PROJECT=\"tsconfig.testing.json\" mocha -r ts-node/register test/\\*.spec.ts"
   },
   "dependencies": {
-    "@burner-wallet/core": "^1.0.2"
+    "@burner-wallet/core": "^1.1.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.5",
