@@ -49,7 +49,7 @@ export default class ContractWalletSigner extends Signer {
     this.innerFactoryAddress = this.calculateFactoryAddress();
     this.walletOwner = {};
     this.creationCode = creationCode;
-    this.isEnabled = useLocalStorage ? localStorage.getItem(ENABLED_STORAGE_KEY) === 'true' : true;
+    this.isEnabled = useLocalStorage ? localStorage.getItem(ENABLED_STORAGE_KEY) !== 'false' : true;
     this.useLocalStorage = useLocalStorage;
     this.gasMultiplier = gasMultiplier;
 
@@ -164,7 +164,7 @@ export default class ContractWalletSigner extends Signer {
   async setSignerOverride(walletAddress: string, newSigner: string) {
     const primarySigner = this.walletOwner[walletAddress];
     const hash = soliditySha3('burn:', walletAddress, newSigner);
-    const signature = await this.core!.signMsg(hash, primarySigner);
+    const signature = await this.core!.signMsg(hash!, primarySigner);
 
     this.setOverride(walletAddress, signature, newSigner);
   }
@@ -174,7 +174,7 @@ export default class ContractWalletSigner extends Signer {
   ) {
     const factory = this.getFactory();
     const hash = soliditySha3(walletAddress, target, data, '0');
-    const signature = await this.core!.signMsg(hash, signer);
+    const signature = await this.core!.signMsg(hash!, signer);
 
     const executeData = factory.methods.executeWithSignature(
       walletAddress, target, data, value, signature).encodeABI();
@@ -222,12 +222,12 @@ export default class ContractWalletSigner extends Signer {
   }
 
   calculateFactoryAddress() {
-    return '0x' + soliditySha3('0xd6', '0x94', this.factoryAddress, '0x01').substr(-40);
+    return '0x' + soliditySha3('0xd6', '0x94', this.factoryAddress, '0x01')!.substr(-40);
   }
 
   getWalletAddress(account: string) {
     const codeHash = soliditySha3(CREATION_CODE, padLeft(this.factoryAddress, 64), padLeft(account, 64));
     const salt = 0;
-    return '0x' + soliditySha3('0xff', this.innerFactoryAddress, salt, codeHash).slice(-40);
+    return '0x' + soliditySha3('0xff', this.innerFactoryAddress, salt, codeHash!)!.slice(-40);
   }
 }
