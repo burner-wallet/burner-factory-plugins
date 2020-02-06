@@ -183,6 +183,14 @@ export default class ContractWalletSigner extends Signer {
     };
   }
 
+  signMsg(msg: any, walletAddress: string) {
+    const signer = this.walletSignerOverride[walletAddress]
+      ? this.walletSignerOverride[walletAddress].address
+      : this.walletOwner[walletAddress];
+
+    return this.core!.signMsg(msg, signer);
+  }
+
   async setSignerOverride(walletAddress: string, newSigner: string) {
     const primarySigner = this.walletOwner[walletAddress];
     const hash = soliditySha3('burn:', walletAddress, newSigner);
