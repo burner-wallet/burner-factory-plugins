@@ -1,6 +1,6 @@
 {
   "name": "@burner-factory/contract-wallet-signer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "David Mihal <david@dmihal.com>",
   "license": "MIT",
   "main": "dist/ContractWalletSigner.js",
