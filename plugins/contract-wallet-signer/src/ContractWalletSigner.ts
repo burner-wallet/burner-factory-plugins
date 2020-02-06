@@ -68,16 +68,23 @@ export default class ContractWalletSigner extends Signer {
   }
 
   permissions() {
-    return ['getOwner', 'isEnabled', 'enable', 'disable', 'isContractWallet'];
+    const permissions = ['getOwner', 'isEnabled', 'enable', 'disable', 'isContractWallet'];
+    if (this.core!.canCallSigner('writeKey', this.walletOwner[this.accounts[0]])) {
+      permissions.push('writeKey');
+      permissions.push('keyToAddress');
+    }
+    return permissions;
   }
 
-  invoke(action: string, address: string) {
+  invoke(action: string, address: string, ...params: any[]) {
     switch (action) {
       case 'getOwner':
         return this.walletOwner[address];
+
       case 'setSignerOverride':
-        // TODO: update once burner-core defs are updated
-        return this.setSignerOverride(address, arguments[2] as string);
+        const [overrideAccount] = params;
+        return this.setSignerOverride(address, overrideAccount as string);
+
       case 'getSignerOverride':
         return this.walletSignerOverride[address] ? this.walletSignerOverride[address].address : null;
       case 'isEnabled':
@@ -92,6 +99,21 @@ export default class ContractWalletSigner extends Signer {
         return;
       case 'isContractWallet':
         return true;
+
+      case 'readKey':
+        const owner1 = this.walletOwner[address];
+        return this.core!.callSigner('readKey', owner1);
+
+      case 'writeKey':
+        const [newKey] = params;
+        const owner2 = this.walletOwner[address];
+        return this.core!.callSigner('writeKey', owner2, newKey);
+
+      case 'keyToAddress':
+        const [newKey2] = params;
+        const owner3 = this.walletOwner[address]
+        return this.core!.callSigner('keyToAddress', owner3, newKey2);
+
       default:
         throw new Error(`Unknown action ${action}`);
     }
