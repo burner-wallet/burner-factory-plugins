@@ -15,6 +15,7 @@
     "plugins/*"
   ],
   "devDependencies": {
-    "lerna": "^3.18.1"
+    "lerna": "^3.18.1",
+    "typescript": "3.7"
   }
 }
