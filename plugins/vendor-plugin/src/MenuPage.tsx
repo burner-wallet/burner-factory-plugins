@@ -21,12 +21,19 @@ const ItemName = styled.div`
 
 interface MenuPageProps {
   vendor: any;
+  vendorIndex: number;
   plugin: VendorPlugin;
+  refresh: () => void;
 }
 
-const MenuPage: React.FC<MenuPageProps> = ({ vendor, vendorIndex }) => {
+const MenuPage: React.FC<MenuPageProps> = ({ vendor, vendorIndex, plugin, refresh }) => {
   const { BurnerComponents } = useBurner();
   const { Page } = BurnerComponents;
+
+  const setAvailable = async (itemIndex: number, isAvailable: boolean) => {
+    await plugin.setAvailable(vendorIndex, itemIndex, isAvailable);
+    refresh();
+  }
 
   return (
     <div>
@@ -39,7 +46,7 @@ const MenuPage: React.FC<MenuPageProps> = ({ vendor, vendorIndex }) => {
               type="checkbox"
               checked={item.available}
               id={`item_${i}`}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => plugin.setAvailable(vendor, i, e.target.checked)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAvailable(i, e.target.checked)}
             />
             <label htmlFor={`item_${i}`}>In Stock</label>
           </AvailableColumn>

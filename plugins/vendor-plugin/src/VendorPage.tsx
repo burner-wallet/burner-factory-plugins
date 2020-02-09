@@ -57,6 +57,11 @@ const VendorPage: React.FC<PluginPageContext & { className: string }> = ({
 
   const [menu, setMenu] = useState<any>(null);
   
+  const refresh = async () => {
+    const _menu = await _plugin.getMenu(true);
+    setMenu(_menu);
+  };
+
   useEffect(() => {
     _plugin.getMenu().then((_menu: any) => setMenu(_menu));
   }, []);
@@ -78,6 +83,11 @@ const VendorPage: React.FC<PluginPageContext & { className: string }> = ({
   }
   const vendorIndex = menu.vendors.indexOf(vendor);
 
+  const setOpen = async (isOpen: boolean) => {
+    await _plugin.setIsOpen(vendorIndex, isOpen);
+    refresh();
+  }
+
   return (
     // @ts-ignore
     <Page title="Vendor" className={className}>
@@ -90,7 +100,7 @@ const VendorPage: React.FC<PluginPageContext & { className: string }> = ({
               <input
                 type="checkbox"
                 checked={vendor.isOpen === false ? false : true}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _plugin.setIsOpen(vendorIndex, e.target.checked)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setOpen(e.target.checked)}
               />
             </label>
           </HeaderSettings>
@@ -99,7 +109,7 @@ const VendorPage: React.FC<PluginPageContext & { className: string }> = ({
           <Route path="/vendor/orders" render={() => (<OrderPage plugin={_plugin} />)} />
           <Route
             path="/vendor/menu"
-            render={() =>(<MenuPage vendor={vendor} plugin={_plugin} vendorIndex={vendorIndex} />)}
+            render={() =>(<MenuPage vendor={vendor} plugin={_plugin} vendorIndex={vendorIndex} refresh={refresh} />)}
           />
           <Redirect to="/vendor/orders" />
         </Switch>

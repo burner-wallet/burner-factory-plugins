@@ -28,8 +28,8 @@ export default class VendorPlugin implements Plugin {
     pluginContext.addPage('/vendor', VendorPage);
   }
 
-  getMenu() {
-    if (!this._menu) {
+  getMenu(refresh = false) {
+    if (!this._menu || refresh) {
       this._menu = this._getMenu();
     }
     return this._menu;
@@ -41,10 +41,10 @@ export default class VendorPlugin implements Plugin {
     return json.menu as any;
   }
 
-  async setIsOpen(id: string, isOpen: boolean) {
+  async setIsOpen(vendorIndex: number, isOpen: boolean) {
     const response = await fetch(`${this.factory}/menu/${this.menuId}/setOpen`, {
       method: 'POST',
-      body: JSON.stringify({ vendorIndex:0, isOpen: false }),
+      body: JSON.stringify({ vendorIndex, isOpen }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -64,5 +64,15 @@ export default class VendorPlugin implements Plugin {
 
   isComplete(tx: string) {
     return this.completeTx.indexOf(tx) !== -1;
+  }
+
+  async setAvailable(vendorIndex: number, itemIndex: number, available: boolean) {
+    const response = await fetch(`${this.factory}/menu/${this.menuId}/setAvailable`, {
+      method: 'POST',
+      body: JSON.stringify({ vendorIndex, itemIndex, available }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }
