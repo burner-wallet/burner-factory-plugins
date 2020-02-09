@@ -1,62 +1,123 @@
-import React, { useState, useEffect } from 'react';
-import { PluginPageContext, HistoryEvent } from '@burner-wallet/types';
+import React, { useState, useEffect, ComponentType } from 'react';
+import { PluginPageContext } from '@burner-wallet/types';
+import { Switch, Route, Redirect, NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import VendorPlugin from './VendorPlugin';
+import OrderPage from './OrderPage';
+import MenuPage from './MenuPage';
 
-const Checkbox = styled.input`
-  transform: scale(2);
-`;
-
-const Row = styled.div`
-  display: flex;
-  margin: 4px 0;
-  padding: 4px;
-  border-bottom: solid 1px #aaaaaa;
-`;
-
-const TXData = styled.div`
+const Content = styled.div`
   flex: 1;
+  overflow-x: auto;
+  display: flex;
+  flex-direction: column;
 `;
 
-const VendorPage: React.FC<PluginPageContext> = ({ BurnerComponents, plugin, defaultAccount, assets }) => {
+const Bottom = styled.div`
+  display: flex;
+`;
+
+const SubHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  background: #f3f1f1;
+  padding: 4px;
+  align-items: center;
+`;
+
+const HeaderSettings = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 14px;
+`;
+
+export const StyledNavLink = styled(NavLink)`
+  display: block;
+  text-decoration: none;
+  flex: 1 0 10%;
+  text-align: center;
+  background: #ececec;
+  line-height: 40px;
+
+  &:hover {
+    background: #efefef;
+  }
+
+  &.active {
+    background: #cecece;
+  }
+`;
+
+const VendorPage: React.FC<PluginPageContext & { className: string }> = ({
+  BurnerComponents, plugin, defaultAccount, assets, actions, className
+}) => {
   const _plugin = plugin as VendorPlugin;
 
   const [menu, setMenu] = useState<any>(null);
-  const [, rerender] = React.useState();
   
   useEffect(() => {
     _plugin.getMenu().then((_menu: any) => setMenu(_menu));
   }, []);
 
+  const { Page, History, Button } = BurnerComponents;
   if (!menu) {
-    return null;
+    return (
+      // @ts-ignore
+      <Page title="Vendor" className={className}>Loading...</Page>
+    );
   }
 
-  const setHidden = (tx: string) => {
-    _plugin.setComplete(tx, true);
-    rerender({});
-  };
+  const [vendor] = menu.vendors.filter((vendor: any) => vendor.recipient === defaultAccount);
+  if (!vendor) {
+    return (
+      // @ts-ignore
+      <Page title="Vendor" className={className}>Your account is not associated with any vendor</Page>
+    );
+  }
+  const vendorIndex = menu.vendors.indexOf(vendor);
 
   return (
-    <BurnerComponents.Page title="Vendor">
-      <BurnerComponents.History account={defaultAccount} render={(events: HistoryEvent[]) => (
-        events
-          .filter((event: HistoryEvent) => event.getAsset() && !_plugin.isComplete(event.tx))
-          .map((event: HistoryEvent) => (
-          <Row key={event.tx}>
-            <TXData>
-              <div>{event.from}</div>
-              <div>{event.message}</div>
-              <div>{event.getDisplayValue()}</div>
-            </TXData>
-            <div>
-              <Checkbox type="checkbox" onChange={() => setHidden(event.tx)} />
-            </div>
-          </Row>
-        ))
-      )} />
-    </BurnerComponents.Page>
+    // @ts-ignore
+    <Page title="Vendor" className={className}>
+      <Content>
+        <SubHeading>
+          <div>{vendor.name}</div>
+          <HeaderSettings>
+            <label>
+              Is open
+              <input
+                type="checkbox"
+                checked={vendor.isOpen === false ? false : true}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => _plugin.setIsOpen(vendorIndex, e.target.checked)}
+              />
+            </label>
+          </HeaderSettings>
+        </SubHeading>
+        <Switch>
+          <Route path="/vendor/orders" render={() => (<OrderPage plugin={_plugin} />)} />
+          <Route
+            path="/vendor/menu"
+            render={() =>(<MenuPage vendor={vendor} plugin={_plugin} vendorIndex={vendorIndex} />)}
+          />
+          <Redirect to="/vendor/orders" />
+        </Switch>
+      </Content>
+      <Bottom>
+        <StyledNavLink to="/vendor/orders">Orders</StyledNavLink>
+        <StyledNavLink to="/vendor/menu">Menu</StyledNavLink>
+      </Bottom>
+    </Page>
   );
 };
 
-export default VendorPage;
+const StyledVendorPage = styled(VendorPage)`
+  position: absolute;
+  top: 60px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+`;
+
+export default StyledVendorPage as unknown as ComponentType<PluginPageContext>;

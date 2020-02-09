@@ -7,7 +7,7 @@ interface OrderMenuPluginOptions {
   factory?: string;
 }
 
-export default class OrderMenuPlugin implements Plugin {
+export default class VendorPlugin implements Plugin {
   private menuId: string;
   private factory: string;
   private _menu: Promise<any> | null;
@@ -41,10 +41,24 @@ export default class OrderMenuPlugin implements Plugin {
     return json.menu as any;
   }
 
+  async setIsOpen(id: string, isOpen: boolean) {
+    const response = await fetch(`${this.factory}/menu/${this.menuId}/setOpen`, {
+      method: 'POST',
+      body: JSON.stringify({ vendorIndex:0, isOpen: false }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
   setComplete(tx: string, complete: boolean) {
-    if (complete && this.completeTx.indexOf(tx) === -1) {
+    const txIndex = this.completeTx.indexOf(tx)
+    if (complete && txIndex === -1) {
       this.completeTx.push(tx);
+    } else if (!complete && txIndex !== -1) {
+      this.completeTx.splice(txIndex, 1);
     }
+
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.completeTx));
   }
 
