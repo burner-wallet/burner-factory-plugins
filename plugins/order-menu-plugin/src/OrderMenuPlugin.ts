@@ -8,6 +8,7 @@ interface OrderMenuPluginOptions {
   title?: string;
   description?: string;
   icon?: string | null;
+  hideButton?: boolean;
 }
 const NAME_KEY = 'burner-vendor-name';
 
@@ -19,12 +20,14 @@ export default class OrderMenuPlugin implements Plugin {
   private icon: string | null;
   private _menu: Promise<Menu> | null;
   public name: string | null;
+  private hideButton: boolean;
 
   constructor(menuId: string, {
     factory = 'https://burnerfactory.com',
     title = 'Order Food & Drinks',
     description = 'Purchase food & drinks with your tokens',
     icon = null,
+    hideButton = false,
   }: OrderMenuPluginOptions = {}) {
     this.menuId = menuId;
     this.factory = factory;
@@ -32,19 +35,23 @@ export default class OrderMenuPlugin implements Plugin {
     this.description = description;
     this.icon = icon;
     this.name = window.localStorage.getItem(NAME_KEY) || null;
+    this.hideButton = hideButton;
 
     this._menu = null;
   }
 
   initializePlugin(pluginContext: BurnerPluginContext) {
-    pluginContext.addButton('apps', this.title, '/menu', {
-      description: this.description,
-      icon: this.icon,
-    });
     pluginContext.addPage('/menu/set-name', SetNamePage);
     pluginContext.addPage('/menu/:vendorName?', MenuPage);
     pluginContext.onAccountSearch(query => this.vendorSearch(query));
     pluginContext.addAddressToNameResolver((address: string) => this.lookupName(address));
+
+    if (!this.hideButton) {
+      pluginContext.addButton('apps', this.title, '/menu', {
+        description: this.description,
+        icon: this.icon,
+      });
+    }
   }
 
   getMenu() {
