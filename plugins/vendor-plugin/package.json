@@ -1,6 +1,6 @@
 {
   "name": "@burner-factory/vendor-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "David Mihal <david@dmihal.com>",
   "license": "MIT",
   "main": "dist/VendorPlugin.js",
