@@ -16,8 +16,10 @@ const Row = styled.div`
   border-bottom: solid 1px #aaaaaa;
   align-items: center;
 `;
+
 const TXData = styled.div`
   flex: 1;
+  overflow: hidden;
 `;
 
 const Ammount = styled.div`
@@ -31,6 +33,11 @@ const Empty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const Name = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 interface OrderPageProps {
@@ -73,9 +80,9 @@ const OrderPage: React.FC<OrderPageProps> = ({ plugin }) => {
           <Row key={event.tx}>
             <TXData>
               <div>{event.message}</div>
-              <div>
+              <Name>
                 <AddressName address={event.from} render={(name: string | null, address: string) => name || address} />
-              </div>
+              </Name>
             </TXData>
             <Ammount>{event.getDisplayValue()} {event.getAsset().name}</Ammount>
             <div>
