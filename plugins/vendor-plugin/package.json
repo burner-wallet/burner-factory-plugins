@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@burner-wallet/types": "^1.0.0",
+    "react-blockies": "^1.4.1",
     "styled-components": "^4.4.1"
   }
 }

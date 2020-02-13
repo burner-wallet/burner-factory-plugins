@@ -3,6 +3,7 @@ import { useBurner } from '@burner-wallet/ui-core';
 import { HistoryEvent } from '@burner-wallet/types';
 import styled from 'styled-components';
 import VendorPlugin from './VendorPlugin';
+import Blockies from 'react-blockies';
 
 const Checkbox = styled.input`
   transform: scale(2);
@@ -78,6 +79,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ plugin }) => {
 
         return incompleteOrders.map((event: HistoryEvent) => (
           <Row key={event.tx}>
+            <Blockies seed={event.from} />
             <TXData>
               <div>{event.message}</div>
               <Name>
