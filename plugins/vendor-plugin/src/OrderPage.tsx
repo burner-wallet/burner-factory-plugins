@@ -79,7 +79,7 @@ const OrderPage: React.FC<OrderPageProps> = ({ plugin }) => {
 
         return incompleteOrders.map((event: HistoryEvent) => (
           <Row key={event.tx}>
-            <Blockies seed={event.from} />
+            <Blockies seed={event.from.toLowerCase()} />
             <TXData>
               <div>{event.message}</div>
               <Name>
