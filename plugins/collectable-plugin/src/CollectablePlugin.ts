@@ -35,7 +35,7 @@ export default class CollectablePlugin implements Plugin {
   getContract() {
     if (!this.contract) {
       const web3 = this.pluginContext!.getWeb3(this.network);
-      this.contract = new web3.eth.Contract(abi, this.address);
+      this.contract = new web3.eth.Contract(abi as any, this.address);
     }
     return this.contract;
   }

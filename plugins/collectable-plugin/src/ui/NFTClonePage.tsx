@@ -7,7 +7,7 @@ interface ClonePageParams {
 }
 
 const NFTClonePage: React.FC<PluginPageContext<ClonePageParams>> = ({
-  burnerComponents, match, plugin, history, defaultAccount
+  BurnerComponents, match, plugin, history, defaultAccount
 }) => {
   const _plugin = plugin as CollectablePlugin;
   const [status, setStatus] = useState('');
@@ -29,11 +29,10 @@ const NFTClonePage: React.FC<PluginPageContext<ClonePageParams>> = ({
     });
   }, [match]);
 
-  const { Page } = burnerComponents;
   return (
-    <Page title="Claim Collectable">
+    <BurnerComponents.Page title="Claim Collectable">
       {status}
-    </Page>
+    </BurnerComponents.Page>
   );
 };
 
