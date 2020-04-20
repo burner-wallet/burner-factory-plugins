@@ -14,15 +14,17 @@ export interface Event {
 
 export default class SechedulePlugin implements Plugin {
   private schedule: Day[];
+  private description?: string;
 
-  constructor(schedule: Day[]) {
+  constructor(schedule: Day[], { description }: { description?: string } = {}) {
     this.schedule = schedule;
+    this.description = description;
   }
 
   initializePlugin(pluginContext: BurnerPluginContext) {
     pluginContext.addPage('/schedule/:day?', SchedulePage);
     pluginContext.addButton('apps', 'Schedule', '/schedule', {
-      description: 'Follow the ETHWaterloo event schedule',
+      description: this.description || 'Follow the event schedule',
       logo: 'https://static.burnerfactory.com/icons/schedule.svg',
     });
   }
