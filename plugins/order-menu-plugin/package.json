@@ -1,6 +1,6 @@
 {
   "name": "@burner-factory/order-menu-plugin",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "author": "David Mihal <david@dmihal.com>",
   "license": "MIT",
   "main": "dist/OrderMenuPlugin.js",
@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "@burner-wallet/types": "^1.0.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^5.0.1"
   }
 }

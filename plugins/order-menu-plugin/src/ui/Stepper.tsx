@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   display: inline-flex;
-  padding: 4px;
+  padding: 8px;
 `;
 
 const ButtonContainer = styled.div`

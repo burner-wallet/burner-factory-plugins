@@ -1,6 +1,6 @@
 {
   "name": "@burner-factory/push-notification-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "David Mihal <david@dmihal.com>",
   "license": "MIT",
   "main": "dist/PushNotificationsPlugin.js",
@@ -13,6 +13,6 @@
     "@burner-wallet/types": "^1.0.0",
     "@types/workbox-window": "^4.3.2",
     "service-worker-loader": "^3.3.1",
-    "styled-components": "^4.4.1"
+    "styled-components": "^5.0.1"
   }
 }
