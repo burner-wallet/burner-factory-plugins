@@ -1,0 +1,15 @@
+{
+  "name": "@burner-factory/relayer",
+  "version": "0.1.0",
+  "author": "David Mihal <david@dmihal.com>",
+  "license": "MIT",
+  "main": "dist/BurnerFactoryRelayerGateway.js",
+  "types": "dist/BurnerFactoryRelayerGateway.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start-test-wallet": "tsc -w"
+  },
+  "dependencies": {
+    "@burner-wallet/core": "^1.2.2"
+  }
+}
