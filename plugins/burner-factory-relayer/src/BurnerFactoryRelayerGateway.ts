@@ -29,12 +29,16 @@ export default class BurnerFactoryRelayerGateway extends Gateway {
 
   async sendTx(network: string, payload: any) {
     if (payload.params[0].useGSN || payload.params[0].gasless) {
-      const tx = await this.buildTx(network, payload.params[0]);
+      try {
+        const tx = await this.buildTx(network, payload.params[0]);
 
-      tx.signature = await this.getSignature(tx);
+        tx.signature = await this.getSignature(tx);
 
-      const txHash = await this.sendToRelay(network, tx);
-      return txHash;
+        const txHash = await this.sendToRelay(network, tx);
+        return txHash;
+      } catch (e) {
+        console.warn('Relay failed', e);
+      }
     }
 
     return this.send(network, {
